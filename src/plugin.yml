@@ -1,0 +1,19 @@
+name: AllowPlayers
+version: 0.1
+description: Allow players onto your server when minecraft.net is down
+author: jgeboski
+main: org.AllowPlayers.AllowPlayers
+
+commands:
+  allowplayers:
+    description: Manage and view pending requests
+    aliases: ['ap']
+    usage: /<command> [[pending] [accept|reject]] [[pagenumber] [playername]]
+  mcnet:
+    description: Minecraft.net management
+    aliases: ['mcn']
+    usage: /<command> [status|force] [check|online|offline]
+  onlinemode:
+    description: Enable/Disable online mode
+    aliases: ['om']
+    usage: /<command> [status|enable|disable]
