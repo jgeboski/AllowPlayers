@@ -83,11 +83,7 @@ public class AllowPlayers extends JavaPlugin
         if(!(sender instanceof Player))
             return true;
         
-        Player player = (Player) sender;
-        if(player.isOp())
-            return true;
-        
-        if(player.hasPermission(perm))
+        if(((Player) sender).hasPermission(perm))
             return true;
         
         Message.severe(sender, "You don't have permission to do that!");
