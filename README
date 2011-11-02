@@ -13,13 +13,11 @@ Commands:
         - Usage: /<command> [status|enable|disable]
     
 Permissions:
-    - allowplayers.onlinemode  - Permission to set the server's online mode
-    - allowplayers.msg.notify  - Permission to view Minecraft.net status messages
-    - allowplayers.msg.request - Permission to view messages about requests
-    - allowplayers.mcn         - Permission to access the mcnet command
-                                 and the viewing of minecraft.net status
-        - allowplayers.mcn.force  - Permission to force minecraft.net mode
-    - allowplayers.ap          - Permission to access the allowplayers command
-                                 and the viewing of pending requests
-        - allowplayers.ap.online  - Force the AllowPlayers online state
-        - allowplayers.ap.mod     - Accept/reject a pending request
+    - allowplayers.ap            - Permission to access the allowplayers command
+        - allowplayers.ap.online - Permission to force the AllowPlayers online state
+        - allowplayers.ap.mod    - Permission to accept/reject a pending request
+    - allowplayers.mcn           - Permission to access the mcnet command
+        - allowplayers.mcn.force - Permission to force minecraft.net mode
+    - allowplayers.onlinemode    - Permission to set the server's online mode
+    - allowplayers.msg.notify    - Permission to view Minecraft.net status messages
+    - allowplayers.msg.request   - Permission to view messages about requests

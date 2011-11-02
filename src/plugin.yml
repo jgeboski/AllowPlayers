@@ -17,3 +17,30 @@ commands:
     description: Enable/Disable online mode
     aliases: ['om']
     usage: /<command> [status|enable|disable]
+
+permissions:
+  allowplayers.ap:
+    description: Access the allowplayers command
+    default: op
+  allowplayers.ap.online:
+    description: Force the AllowPlayers online state
+    default: op
+  allowplayers.ap.mod:
+    description: Accept/reject a pending request
+    default: op
+  allowplayers.mcn:
+    description: Access the mcnet command
+    default: op
+  allowplayers.mcn.force:
+    description: Force minecraft.net mode
+    default: op
+  allowplayers.onlinemode:
+    description: Set the server's online mode
+    default: op
+  allowplayers.msg.notify:
+    description: View Minecraft.net status messages
+    default: op
+  allowplayers.msg.request:
+    description: View messages about requests
+    default: op
+    
