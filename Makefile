@@ -12,7 +12,7 @@ all: deps objs jar
 
 jar:
 	rm -f $(JAR)
-	cd $(OBJS) && jar cvf $(JAR) *
+	jar cvf $(JAR) -C $(OBJS) .
 
 objs:
 	rm -rf $(OBJS)
