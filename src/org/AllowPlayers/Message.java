@@ -24,8 +24,6 @@ import org.bukkit.entity.Player;
 
 public class Message
 {
-    public static final String pluginName = "AllowPlayers";
-    
     /**
      * Send an INFO message to a CommandSender.  This method is the
      * same as calling Message.toSender() but, let's keep the INFO,
@@ -89,9 +87,9 @@ public class Message
         
         if(sender instanceof Player) {
             msg = String.format("%s[%s]%s %s", ChatColor.DARK_AQUA,
-                                pluginName, ChatColor.WHITE, msg);
+                AllowPlayers.pluginName, ChatColor.WHITE, msg);
         } else {
-            msg = String.format("[%s] %s ", pluginName, msg);
+            msg = String.format("[%s] %s ", AllowPlayers.pluginName, msg);
             msg = ChatColor.stripColor(msg);
         }
         

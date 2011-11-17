@@ -32,6 +32,8 @@ import org.bukkit.plugin.PluginManager;
 
 public class AllowPlayers extends JavaPlugin
 {
+    public static final String pluginName = "AllowPlayers";
+    
     public HashMap<String, Request> requests;
     public Watcher watcher;
     public boolean online;

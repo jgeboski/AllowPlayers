@@ -25,12 +25,11 @@ import org.bukkit.ChatColor;
 public class Log
 {
     protected static final Logger log = Logger.getLogger("Minecraft");
-    public static final String pluginName = "AllowPlayers";
     
     private static String format(String msg, Object ... args)
     {
         msg = ChatColor.stripColor(String.format(msg, args));
-        msg = String.format("[%s] %s", pluginName, msg);
+        msg = String.format("[%s] %s", AllowPlayers.pluginName, msg);
         return msg;
     }
     
