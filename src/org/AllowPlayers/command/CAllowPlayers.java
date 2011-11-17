@@ -64,26 +64,31 @@ public class CAllowPlayers implements CommandExecutor
     
     private void pending(CommandSender sender, String page)
     {
-        try {
-            
-        } catch(NumberFormatException e) {
-            Message.info(sender, "Invalid page number");
-            return;
-        }
+        int max, size;
+        int p, m, i, t;
+        Request[] r;
         
-        int size = ap.requests.size();
-        int p    = Integer.parseInt(page);
-        int m = 5, i = 0, t;
+        max  = 5;
+        size = ap.requests.size();
         
         if(size < 1) {
             Message.info(sender, "There are no peding requests");
             return;
         }
         
+        try {
+            p = Integer.parseInt(page);
+        } catch(NumberFormatException e) {
+            Message.info(sender, "That's not a page number!");
+            return;
+        }
+        
+        i = 0;
+        
         if(p <= 0)
             i = 0;
         if(p > 0)
-            i = (p * m) + 1;
+            i = (p * max) + 1;
         
         if(i > size)
             return;
@@ -92,21 +97,25 @@ public class CAllowPlayers implements CommandExecutor
         if(t > size)
             t = size - 1;
         
-        Message.info(sender, "Showing results %d to %d of %d pending requests",
-                     i, t, size);
+        Message.info(sender,
+            "Showing results %d to %d of %d pending requests",
+            i, t, size);
         
-        Request[] r = (Request[]) ap.requests.values().toArray();
+        r = (Request[]) ap.requests.values().toArray();
         
         for(; i < t; i++)
-            Message.info(sender, "Player: %s, IP: %s", r[i].player, r[i].address);
+            Message.info(sender, "Player: %s, IP: %s",
+                r[i].player, r[i].address);
     }
     
     private void accept(CommandSender sender, String player, boolean accept)
     {
+        Request request;
+        
         if(!ap.hasPermission(sender, "allowplayers.ap.mod"))
             return;
         
-        Request request = ap.getRequest(player);
+        request = ap.getRequest(player);
         
         if(request == null) {
             Message.severe(sender, "Invalid player");
@@ -119,7 +128,7 @@ public class CAllowPlayers implements CommandExecutor
             request.reject();
         
         String msg = String.format("%s %s %s's login request",
-            sender.getName(), (accept ? "accepted" : "rejected"), request.player);
+            sender.getName(),(accept ? "accepted" : "rejected"), request.player);
         
         if(!ap.hasPermission(sender, "allowplayers.msg.request"))
             Message.info(sender, msg);

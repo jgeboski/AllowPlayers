@@ -45,13 +45,16 @@ public class AllowPlayers extends JavaPlugin
     
     public void onEnable()
     {
-        PluginManager pm = getServer().getPluginManager();
+        PluginManager pm;
+        APPlayerListener pl;
         
         getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
         getCommand("mcnet").setExecutor(new CMCNet(this));
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
         
-        APPlayerListener pl = new APPlayerListener(this);
+        pm = getServer().getPluginManager();
+        pl = new APPlayerListener(this);
+        
         pm.registerEvent(Type.PLAYER_JOIN,     pl, Priority.Normal, this);
         pm.registerEvent(Type.PLAYER_PRELOGIN, pl, Priority.Normal, this);
         
@@ -102,10 +105,8 @@ public class AllowPlayers extends JavaPlugin
         Player[] players = getServer().getOnlinePlayers();
         
         for(Player player : players) {
-            if(!player.hasPermission(perm))
-                continue;
-            
-            Message.info((CommandSender) player, format, args);
+            if(player.hasPermission(perm))
+                Message.info((CommandSender) player, format, args);
         }
         
         Log.info(format, args);
@@ -135,10 +136,8 @@ public class AllowPlayers extends JavaPlugin
      **/
     public void removeRequest(String player)
     {
-        if(player.length() < 1)
-            return;
-        
-        requests.remove(player);
+        if(player.length() >= 1)
+            requests.remove(player);
     }
     
     /**

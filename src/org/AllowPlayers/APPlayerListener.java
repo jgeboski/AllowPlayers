@@ -37,10 +37,8 @@ public class APPlayerListener extends PlayerListener
     
     public void onPlayerJoin(PlayerJoinEvent e)
     {
-        if(ap.online)
-            return;
-        
-        ap.removeRequest(e.getPlayer().getName());
+        if(!ap.online)
+            ap.removeRequest(e.getPlayer().getName());
     }
     
     public void onPlayerPreLogin(PlayerPreLoginEvent e)
@@ -72,6 +70,7 @@ public class APPlayerListener extends PlayerListener
             
             ap.messagePermission("allowplayers.msg.request",
                 "%s is still awaiting approval", player);
+            
             return;
         }
         
