@@ -26,7 +26,7 @@ import java.net.URLConnection;
 public class Watcher extends Thread
 {
     /* Time between checks in seconds */
-    public int ctimeout = 10;
+    public int ctimeout = 60;
     
     public AllowPlayers ap;
     public volatile boolean quit;
@@ -58,8 +58,8 @@ public class Watcher extends Thread
             try {
                 urlc = url.openConnection();
                 urlc.setAllowUserInteraction(false);
-                urlc.setConnectTimeout(2000);
-                urlc.setReadTimeout(2000);
+                urlc.setConnectTimeout(10000);
+                urlc.setReadTimeout(10000);
                 urlc.getContent();
                 ap.setOnline(true);
             } catch(IOException e) {
