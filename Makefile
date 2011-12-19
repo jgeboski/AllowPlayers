@@ -24,4 +24,4 @@ deps:
 	rm -rf $(DEPS)
 	mkdir -p $(DEPS)
 	
-	wget -O $(DEPS)/craftbukkit-1337.jar http://ci.bukkit.org/job/dev-CraftBukkit/1337/artifact/target/craftbukkit-0.0.1-SNAPSHOT.jar
+	wget -O $(DEPS)/craftbukkit-1597.jar http://ci.bukkit.org/job/dev-CraftBukkit/1597/artifact/target/craftbukkit-1.0.1-R1.jar
