@@ -57,8 +57,8 @@ public class AllowPlayers extends JavaPlugin
         pm = getServer().getPluginManager();
         pl = new APPlayerListener(this);
         
-        pm.registerEvent(Type.PLAYER_JOIN,     pl, Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_PRELOGIN, pl, Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_JOIN,  pl, Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_LOGIN, pl, Priority.Normal, this);
         
         watcher.start();
         

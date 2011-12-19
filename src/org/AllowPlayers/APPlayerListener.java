@@ -18,13 +18,11 @@
 
 package org.AllowPlayers;
 
-import java.net.InetAddress;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 public class APPlayerListener extends PlayerListener
 {
@@ -41,45 +39,41 @@ public class APPlayerListener extends PlayerListener
             ap.removeRequest(e.getPlayer().getName());
     }
     
-    public void onPlayerPreLogin(PlayerPreLoginEvent e)
+    public void onPlayerLogin(PlayerLoginEvent e)
     {
+        Player player;
+        String splayer;
+        Request request;
+        String addr;
+        
         if(ap.online)
             return;
         
-        InetAddress inaddr = e.getAddress();
-        String address     = inaddr.getHostAddress();
-        String player      = e.getName();
-        Request request    = ap.getRequest(player);
+        player  = e.getPlayer();
+        splayer = player.getName();
+        request = ap.getRequest(splayer);
         
-        if(request != null) {
-            if(request.state == Request.ACCEPT) {
-                e.allow();
-                return;
-            }
+        if(request == null) {
+            ap.newRequest(e.getKickMessage(), splayer);
+            e.disallow(Result.KICK_OTHER,
+                "Minecraft.net is down; an admin will approve your " +
+                "login request, please try back shortly");
             
-            if(request.state == Request.REJECT) {
-                e.disallow(Result.KICK_OTHER,
-                    "Minecraft.net is still down; your login request" + 
-                    "was REJECTED");
-                return;
-            }
-            
+            ap.messagePermission("allowplayers.msg.request",
+                "%s is awaiting approval", splayer);
+        } else if(request.state == Request.ACCEPT) {
+            e.allow();
+        } else if(request.state == Request.REJECT) {
+            e.disallow(Result.KICK_OTHER,
+                "Minecraft.net is still down; your login request" + 
+                "was REJECTED");
+        } else {
             e.disallow(Result.KICK_OTHER,
                 "Minecraft.net is still down; your login request " +
                 "is still pending approval");
             
             ap.messagePermission("allowplayers.msg.request",
-                "%s is still awaiting approval", player);
-            
-            return;
+                "%s is still awaiting approval", splayer);
         }
-        
-        ap.newRequest(address, player);
-        e.disallow(Result.KICK_OTHER,
-            "Minecraft.net is down; an admin will approve your " +
-            "login request, please try back shortly");
-        
-        ap.messagePermission("allowplayers.msg.request",
-            "%s is awaiting approval", player);
     }
 }

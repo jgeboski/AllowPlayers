@@ -61,9 +61,12 @@ public class Watcher extends Thread
                 urlc.setConnectTimeout(10000);
                 urlc.setReadTimeout(10000);
                 urlc.getContent();
+                
                 ap.setOnline(true);
+                ap.setOnlineMode(true);
             } catch(IOException e) {
                 ap.setOnline(false);
+                ap.setOnlineMode(false);
             }
         }
         
