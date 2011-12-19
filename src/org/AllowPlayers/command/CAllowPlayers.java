@@ -66,7 +66,8 @@ public class CAllowPlayers implements CommandExecutor
     {
         int max, size;
         int p, m, i, t;
-        Request[] r;
+        Object[] objs;
+        Request r;
         
         max  = 5;
         size = ap.requests.size();
@@ -83,29 +84,30 @@ public class CAllowPlayers implements CommandExecutor
             return;
         }
         
-        i = 0;
+        i = (p >= 1) ? ((p * max) + 1) : 0;
+
+        if(i > (size - max)) {
+            i = (size - max);
+            
+            if(i < 0)
+                i = 0;
+        }
         
-        if(p <= 0)
-            i = 0;
-        if(p > 0)
-            i = (p * max) + 1;
+        t = i + max;
         
-        if(i > size)
-            return;
-        
-        t = i + 5;
         if(t > size)
-            t = size - 1;
+            t = size;
         
         Message.info(sender,
             "Showing results %d to %d of %d pending requests",
             i, t, size);
         
-        r = (Request[]) ap.requests.values().toArray();
+        objs = ap.requests.values().toArray();
         
-        for(; i < t; i++)
-            Message.info(sender, "Player: %s, IP: %s",
-                r[i].player, r[i].address);
+        for(; i < t; i++) {
+            r = (Request) objs[i];
+            Message.info(sender, "%s: %s", r.player, r.address);
+        }
     }
     
     private void accept(CommandSender sender, String player, boolean accept)
@@ -128,7 +130,7 @@ public class CAllowPlayers implements CommandExecutor
             request.reject();
         
         String msg = String.format("%s %s %s's login request",
-            sender.getName(),(accept ? "accepted" : "rejected"), request.player);
+            sender.getName(), (accept ? "accepted" : "rejected"), request.player);
         
         if(!ap.hasPermission(sender, "allowplayers.msg.request"))
             Message.info(sender, msg);
