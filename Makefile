@@ -3,7 +3,9 @@ CWD=$(shell pwd)
 SRC=src
 DEPS=.deps
 OBJS=.objs
-JAR=$(CWD)/$(PLUGIN).jar
+
+VERSION=$(shell grep version $(SRC)/plugin.yml | cut -d ' ' -f 2)
+JAR=$(CWD)/$(PLUGIN)-$(VERSION).jar
 
 SRCS=$(shell find $(SRC) -type f -name *.java -printf "%h/%f ")
 JDEPS=$(shell find $(DEPS) -type f -printf "%h/%f:")
