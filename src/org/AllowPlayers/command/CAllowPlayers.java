@@ -33,6 +33,8 @@ public class CAllowPlayers implements CommandExecutor
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
+        String cmd;
+        
         if(!ap.hasPermission(sender, "allowplayers.ap"))
             return true;
         
@@ -51,9 +53,11 @@ public class CAllowPlayers implements CommandExecutor
             return true;
         }
         
-        if(args[0].equalsIgnoreCase("accept"))
+        cmd = args[0].toLowerCase();
+        
+        if(cmd.matches("accept|approve|allow"))
             accept(sender, args[1], true);
-        else if(args[0].equalsIgnoreCase("reject"))
+        else if(cmd.matches("reject|deny|disallow"))
             accept(sender, args[1], false);
         else
             Message.info(sender, command.getUsage());
