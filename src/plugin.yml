@@ -8,7 +8,7 @@ commands:
   allowplayers:
     description: Manage and view pending requests
     aliases: ['ap']
-    usage: /<command> [[pending|reload] [accept|reject]] [[pagenumber] [playername]]
+    usage: /<command> [[requests|reload] [accept|reject]] [[pagenumber] [playername]]
   mcnet:
     description: Minecraft.net management
     aliases: ['mcn']

@@ -43,8 +43,8 @@ public class CAllowPlayers implements CommandExecutor
             return true;
         }
         
-        if(args[0].equalsIgnoreCase("pending")) {
-            pending(sender, ((args.length == 2) ? args[1] : "0"));
+        if(args[0].equalsIgnoreCase("requests")) {
+            requests(sender, ((args.length == 2) ? args[1] : "0"));
             return true;
         } else if(args[0].equalsIgnoreCase("reload")) {
             reload(sender);
@@ -68,7 +68,7 @@ public class CAllowPlayers implements CommandExecutor
         return true;
     }
     
-    private void pending(CommandSender sender, String page)
+    private void requests(CommandSender sender, String page)
     {
         int size, p, i, t;
         Object[] objs;
@@ -80,7 +80,7 @@ public class CAllowPlayers implements CommandExecutor
         size = ap.requests.size();
         
         if(size < 1) {
-            Message.info(sender, "There are no peding requests");
+            Message.info(sender, "There are no requests in the queue");
             return;
         }
         
@@ -103,7 +103,7 @@ public class CAllowPlayers implements CommandExecutor
             t = size;
         
         Message.info(sender,
-            "Showing results %d to %d of %d pending requests", i, t, size);
+            "Showing %d to %d of %d requests", i, t, size);
         
         objs = ap.requests.values().toArray();
         
@@ -126,7 +126,7 @@ public class CAllowPlayers implements CommandExecutor
                 status = 'P';
             }
             
-            Message.info(sender, "%s[%c] %s: %s",
+            Message.info(sender, "%s[%c] %s - %s",
                 color, status, r.player, r.address);
         }
     }
