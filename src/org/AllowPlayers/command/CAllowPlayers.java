@@ -130,8 +130,9 @@ public class CAllowPlayers implements CommandExecutor
         else
             request.reject();
         
-        String msg = String.format("%s %s %s's login request",
-            sender.getName(), (accept ? "accepted" : "rejected"), request.player);
+        String msg = String.format("%s%s %s %s's login request",
+            (accept ? ChatColor.GREEN : ChatColor.RED), sender.getName(),
+            (accept ? "accepted" : "rejected"), request.player);
         
         if(!ap.hasPermission(sender, "allowplayers.msg.request"))
             Message.info(sender, msg);
