@@ -24,18 +24,17 @@ import java.net.URLConnection;
 
 public class Watcher extends Thread
 {
-    /* Time between checks in seconds */
-    public int ctimeout = 60;
+    private volatile boolean quit;
+    private Object timeout;
+    private URL url;
     
     public AllowPlayers ap;
-    public volatile boolean quit;
-    public volatile long timeout;
-    private URL url;
     
     public Watcher(AllowPlayers ap)
     {
         this.ap = ap;
         quit    = false;
+        timeout = new Object();
         
         try {
             url = new URL("http://session.minecraft.net/game/checkserver.jsp");
@@ -48,17 +47,11 @@ public class Watcher extends Thread
         {
             URLConnection urlc;
             
-            for(timeout = ctimeout * 2; !quit && (timeout > 0); timeout--) {
-                try {
-                    Thread.sleep(500);
-                } catch(InterruptedException e) {}
-            }
-            
             try {
                 urlc = url.openConnection();
                 urlc.setAllowUserInteraction(false);
-                urlc.setConnectTimeout(10000);
-                urlc.setReadTimeout(10000);
+                urlc.setConnectTimeout(ap.config.connTimeout);
+                urlc.setReadTimeout(ap.config.connTimeout);
                 urlc.getContent();
                 
                 ap.setOnline(true);
@@ -67,9 +60,28 @@ public class Watcher extends Thread
                 ap.setOnline(false);
                 ap.setOnlineMode(false);
             }
+            
+            try {
+                synchronized(timeout) {
+                    timeout.wait(ap.config.timeout);
+                }
+            } catch(InterruptedException e) {}
         }
         
         /* Let's allow for rerunning when the plugin reloads */
         quit = false;
+    }
+    
+    public void reset()
+    {
+        synchronized(timeout) {
+            timeout.notify();
+        }
+    }
+    
+    public void quit()
+    {
+        quit = true;
+        reset();
     }
 }

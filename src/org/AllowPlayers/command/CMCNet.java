@@ -75,7 +75,7 @@ public class CMCNet implements CommandExecutor
             ap.setOnline(false);
             onlineToSender(sender);
         } else if(cmd.equalsIgnoreCase("check")) {
-            ap.watcher.timeout = 0;
+            ap.watcher.reset();
             Message.info(sender, "Checking minecraft.net status...");
         }
     }

@@ -17,6 +17,7 @@
 
 package org.AllowPlayers;
 
+import java.io.File;
 import java.util.HashMap;
 
 import net.minecraft.server.MinecraftServer;
@@ -34,20 +35,24 @@ public class AllowPlayers extends JavaPlugin
     public static final String pluginName = "AllowPlayers";
     
     public HashMap<String, Request> requests;
+    public APConfiguration config;
     public Watcher watcher;
     public boolean online;
     
-    public AllowPlayers()
+    public void onLoad()
     {
         requests = new HashMap<String, Request>();
-        online   = true;
+        config   = new APConfiguration(new File(getDataFolder(), "config.yml"));
         watcher  = new Watcher(this);
+        online   = true;
     }
     
     public void onEnable()
     {
         PluginManager pm;
         APPlayerListener pl;
+        
+        config.load();
         
         getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
         getCommand("mcnet").setExecutor(new CMCNet(this));
@@ -67,9 +72,9 @@ public class AllowPlayers extends JavaPlugin
     public void onDisable()
     {
         try {
-            watcher.quit = true;
+            watcher.quit();
             watcher.join();
-        } catch(InterruptedException e) {}
+        } catch(Exception e) {}
         
         Log.info("%s disabled", getDescription().getVersion());
     }
