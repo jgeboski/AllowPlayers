@@ -105,7 +105,9 @@ public class CAllowPlayers implements CommandExecutor
         
         for(; i < t; i++) {
             r = (Request) objs[i];
-            Message.info(sender, "%s: %s", r.player, r.address);
+            
+            if(r.state == Request.PENDING)
+                Message.info(sender, "%s: %s", r.player, r.address);
         }
     }
     
