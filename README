@@ -4,7 +4,7 @@ to a server that runs in online mode when minecraft.net is down.
 Commands:
     - allowplayers - Manage and view pending requests
         - Aliases: ap
-        - Usage: /<command> [[pending] [accept|reject]] [[pagenumber] [playername]]
+        - Usage: /<command> [[pending|reload] [accept|reject]] [[pagenumber] [playername]]
     - mcnet - Minecraft.net management
         - Aliases: mcn
         - Usage: /<command> [status|force] [check|online|offline]
@@ -13,10 +13,11 @@ Commands:
         - Usage: /<command> [status|enable|disable]
     
 Permissions:
-    - allowplayers.ap            - Permission to access the allowplayers command
-        - allowplayers.ap.mod    - Permission to accept/reject a pending request
-    - allowplayers.mcn           - Permission to access the mcnet command
-        - allowplayers.mcn.force - Permission to force minecraft.net mode
-    - allowplayers.onlinemode    - Permission to set the server's online mode
-    - allowplayers.msg.notify    - Permission to view Minecraft.net status messages
-    - allowplayers.msg.request   - Permission to view messages about requests
+    - allowplayers.ap            - Access the allowplayers command
+        - allowplayers.ap.mod    - Accept/reject a pending request
+        - allowplayers.ap.reload - Reload the configuration
+    - allowplayers.mcn           - Access the mcnet command
+        - allowplayers.mcn.force - Force minecraft.net mode
+    - allowplayers.onlinemode    - Set the server's online mode
+    - allowplayers.msg.notify    - View Minecraft.net status messages
+    - allowplayers.msg.request   - View messages about requests

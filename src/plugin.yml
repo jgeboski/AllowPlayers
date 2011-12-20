@@ -8,7 +8,7 @@ commands:
   allowplayers:
     description: Manage and view pending requests
     aliases: ['ap']
-    usage: /<command> [[pending] [accept|reject]] [[pagenumber] [playername]]
+    usage: /<command> [[pending|reload] [accept|reject]] [[pagenumber] [playername]]
   mcnet:
     description: Minecraft.net management
     aliases: ['mcn']
@@ -24,6 +24,9 @@ permissions:
     default: op
   allowplayers.ap.mod:
     description: Accept/reject a pending request
+    default: op
+  allowplayers.ap.reload:
+    description: Reload the configuration
     default: op
   allowplayers.mcn:
     description: Access the mcnet command

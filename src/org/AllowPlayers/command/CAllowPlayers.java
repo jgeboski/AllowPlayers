@@ -46,6 +46,9 @@ public class CAllowPlayers implements CommandExecutor
         if(args[0].equalsIgnoreCase("pending")) {
             pending(sender, ((args.length == 2) ? args[1] : "0"));
             return true;
+        } else if(args[0].equalsIgnoreCase("reload")) {
+            reload(sender);
+            return true;
         }
         
         if(args.length != 2) {
@@ -113,6 +116,17 @@ public class CAllowPlayers implements CommandExecutor
             if(r.state == Request.PENDING)
                 Message.info(sender, "%s: %s", r.player, r.address);
         }
+    }
+    
+    private void reload(CommandSender sender)
+    {
+        if(!ap.hasPermission(sender, "allowplayers.ap.reload"))
+            return;
+        
+        ap.config.load();
+        ap.watcher.reset();
+        
+        Message.info(sender, "Configuration reloaded");
     }
     
     private void accept(CommandSender sender, String player, boolean accept)
