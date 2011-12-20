@@ -14,7 +14,6 @@ Commands:
     
 Permissions:
     - allowplayers.ap            - Permission to access the allowplayers command
-        - allowplayers.ap.online - Permission to force the AllowPlayers online state
         - allowplayers.ap.mod    - Permission to accept/reject a pending request
     - allowplayers.mcn           - Permission to access the mcnet command
         - allowplayers.mcn.force - Permission to force minecraft.net mode

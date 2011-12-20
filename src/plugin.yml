@@ -22,9 +22,6 @@ permissions:
   allowplayers.ap:
     description: Access the allowplayers command
     default: op
-  allowplayers.ap.online:
-    description: Force the AllowPlayers online state
-    default: op
   allowplayers.ap.mod:
     description: Accept/reject a pending request
     default: op
