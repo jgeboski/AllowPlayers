@@ -1,5 +1,5 @@
 name: AllowPlayers
-version: 0.2.0
+version: 0.3.0
 description: Allow players onto your server when minecraft.net is down
 author: jgeboski
 main: org.AllowPlayers.AllowPlayers
