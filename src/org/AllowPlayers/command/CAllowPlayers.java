@@ -70,12 +70,13 @@ public class CAllowPlayers implements CommandExecutor
     
     private void pending(CommandSender sender, String page)
     {
-        int max, size;
-        int p, m, i, t;
+        int size, p, i, t;
         Object[] objs;
         Request r;
         
-        max  = 5;
+        ChatColor color;
+        char status;
+        
         size = ap.requests.size();
         
         if(size < 1) {
@@ -90,31 +91,43 @@ public class CAllowPlayers implements CommandExecutor
             return;
         }
         
-        i = (p >= 1) ? ((p * max) + 1) : 0;
-
-        if(i > (size - max)) {
-            i = (size - max);
-            
-            if(i < 0)
-                i = 0;
-        }
+        t = (int) Math.ceil(((double) size) / ((double) ap.config.maxPerPage));
         
-        t = i + max;
+        if(p > t)
+            p = t;
+        
+        i = (p >= 2) ? ((p - 1) * ap.config.maxPerPage) : 0;
+        t = i + ap.config.maxPerPage;
         
         if(t > size)
             t = size;
         
         Message.info(sender,
-            "Showing results %d to %d of %d pending requests",
-            i, t, size);
+            "Showing results %d to %d of %d pending requests", i, t, size);
         
         objs = ap.requests.values().toArray();
         
-        for(; i < t; i++) {
+        for(; (i < t) && (i < size); i++) {
             r = (Request) objs[i];
             
-            if(r.state == Request.PENDING)
-                Message.info(sender, "%s: %s", r.player, r.address);
+            switch(r.state) {
+            case Request.ACCEPT:
+                color  = ChatColor.GREEN;
+                status = 'A';
+                break;
+            
+            case Request.REJECT:
+                color  = ChatColor.RED;
+                status = 'R';
+                break;
+            
+            default:
+                color  = ChatColor.YELLOW;
+                status = 'P';
+            }
+            
+            Message.info(sender, "%s[%c] %s: %s",
+                color, status, r.player, r.address);
         }
     }
     
