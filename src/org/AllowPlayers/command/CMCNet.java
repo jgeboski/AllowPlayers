@@ -68,13 +68,15 @@ public class CMCNet implements CommandExecutor
         if(!ap.hasPermission(sender, "allowplayers.mcn.force"))
             return;
         
-        if(cmd.equalsIgnoreCase("online"))
+        if(cmd.equalsIgnoreCase("online")) {
             ap.setOnline(true);
-        else if(cmd.equalsIgnoreCase("offline"))
+            onlineToSender(sender);
+        } else if(cmd.equalsIgnoreCase("offline")) {
             ap.setOnline(false);
-        else if(cmd.equalsIgnoreCase("check"))
+            onlineToSender(sender);
+        } else if(cmd.equalsIgnoreCase("check")) {
             ap.watcher.timeout = 0;
-        
-        onlineToSender(sender);
+            Message.info(sender, "Checking minecraft.net status...");
+        }
     }
 }
