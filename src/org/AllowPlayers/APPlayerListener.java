@@ -17,6 +17,7 @@
 
 package org.AllowPlayers;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -55,24 +56,39 @@ public class APPlayerListener extends PlayerListener
         if(request == null) {
             ap.newRequest(e.getKickMessage(), splayer);
             e.disallow(Result.KICK_OTHER,
-                "Minecraft.net is down; an admin will approve your " +
-                "login request, please try back shortly");
+                "Minecraft.net is down. An admin will approve your " +
+                "login request. Try back shortly.");
             
             ap.messagePermission("allowplayers.msg.request",
-                "%s is awaiting approval", splayer);
+                "%s%s is awaiting approval", ChatColor.YELLOW, splayer);
         } else if(request.state == Request.ACCEPT) {
-            e.allow();
+            if(!request.address.equals(e.getKickMessage())) {
+                ap.removeRequest(splayer);
+                e.disallow(Result.KICK_OTHER,
+                    "Your request IP did not match your login IP. " +
+                    "Please try again.");
+                
+                ap.messagePermission("allowplayers.msg.request",
+                    "%s%s attempted to join with a different IP",
+                    ChatColor.RED, splayer);
+            } else {
+                e.allow();
+            }
         } else if(request.state == Request.REJECT) {
             e.disallow(Result.KICK_OTHER,
-                "Minecraft.net is still down; your login request" + 
+                "Minecraft.net is still down. Your login request" + 
                 "was REJECTED");
-        } else {
-            e.disallow(Result.KICK_OTHER,
-                "Minecraft.net is still down; your login request " +
-                "is still pending approval");
             
             ap.messagePermission("allowplayers.msg.request",
-                "%s is still awaiting approval", splayer);
+                "%s%s attempted to join", ChatColor.RED, splayer);
+        } else {
+            e.disallow(Result.KICK_OTHER,
+                "Minecraft.net is still down. Your login request " +
+                "is still pending approval.");
+            
+            ap.messagePermission("allowplayers.msg.request",
+                "%s%s is still awaiting approval",
+                ChatColor.YELLOW, splayer);
         }
     }
 }
