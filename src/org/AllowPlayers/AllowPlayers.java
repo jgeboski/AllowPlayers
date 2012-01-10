@@ -39,18 +39,20 @@ public class AllowPlayers extends JavaPlugin
     public Watcher watcher;
     public boolean online;
     
+    private APPlayerListener appl;
+    
     public void onLoad()
     {
         requests = new HashMap<String, Request>();
         config   = new APConfiguration(new File(getDataFolder(), "config.yml"));
         watcher  = new Watcher(this);
         online   = true;
+        appl     = new APPlayerListener(this);
     }
     
     public void onEnable()
     {
         PluginManager pm;
-        APPlayerListener pl;
         
         config.load();
         
@@ -59,10 +61,8 @@ public class AllowPlayers extends JavaPlugin
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
         
         pm = getServer().getPluginManager();
-        pl = new APPlayerListener(this);
-        
-        pm.registerEvent(Type.PLAYER_JOIN,  pl, Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_LOGIN, pl, Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_JOIN,  appl, Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_LOGIN, appl, Priority.Normal, this);
         
         watcher.start();
         

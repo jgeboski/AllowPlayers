@@ -32,10 +32,6 @@ public class APConfiguration extends YamlConfiguration
     public APConfiguration(File file)
     {
         this.file = file;
-        
-        maxPerPage  = 10;
-        timeout     = 60000;
-        connTimeout = 10000;
     }
     
     public void load()
@@ -53,18 +49,16 @@ public class APConfiguration extends YamlConfiguration
         if(maxPerPage < 1)
             maxPerPage = 1;
         
-        if(file.exists())
-            return;
-        
-        set("allowplayers.maxPerPage",   maxPerPage);
-        set("watcher.timeout",           timeout);
-        set("watcher.connectionTimeout", connTimeout);
-        
-        save();
+        if(!file.exists())
+            save();
     }
     
     public void save()
     {
+        set("allowplayers.maxPerPage",   maxPerPage);
+        set("watcher.timeout",           timeout);
+        set("watcher.connectionTimeout", connTimeout);
+        
         try {
             super.save(file);
         } catch(Exception e) {
