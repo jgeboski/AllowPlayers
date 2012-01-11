@@ -137,6 +137,7 @@ public class CAllowPlayers implements CommandExecutor
             return;
         
         ap.config.load();
+        ap.requests.clear();
         ap.watcher.reset();
         
         Message.info(sender, "Configuration reloaded");
