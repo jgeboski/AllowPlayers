@@ -61,8 +61,6 @@ public class AllowPlayers extends JavaPlugin
         
         events.register();
         watcher.start();
-        
-        Log.info("%s enabled", getDescription().getVersion());
     }
     
     public void onDisable()
@@ -71,8 +69,6 @@ public class AllowPlayers extends JavaPlugin
             watcher.quit();
             watcher.join();
         } catch(Exception e) {}
-        
-        Log.info("%s disabled", getDescription().getVersion());
     }
     
     /**
