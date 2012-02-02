@@ -30,6 +30,10 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
+import org.AllowPlayers.command.CAllowPlayers;
+import org.AllowPlayers.command.CMCNet;
+import org.AllowPlayers.command.COnlineMode;
+
 public class AllowPlayers extends JavaPlugin
 {
     public static final String pluginName = "AllowPlayers";

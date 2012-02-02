@@ -15,12 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers;
+package org.AllowPlayers.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import org.AllowPlayers.AllowPlayers;
+import org.AllowPlayers.Message;
+import org.AllowPlayers.Request;
 
 public class CAllowPlayers implements CommandExecutor
 {
