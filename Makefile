@@ -4,8 +4,7 @@ SRC=src
 DEPS=.deps
 OBJS=.objs
 
-VERSION=$(shell grep version $(SRC)/plugin.yml | cut -d ' ' -f 2)
-JAR=$(CWD)/$(PLUGIN)-$(VERSION).jar
+JAR=$(CWD)/$(PLUGIN).jar
 
 SRCS=$(shell find $(SRC) -type f -name *.java -printf "%h/%f ")
 JDEPS=$(shell find $(DEPS) -type f -printf "%h/%f:")
@@ -26,4 +25,4 @@ deps:
 	rm -rf $(DEPS)
 	mkdir -p $(DEPS)
 	
-	wget -O $(DEPS)/craftbukkit-1597.jar http://ci.bukkit.org/job/dev-CraftBukkit/1597/artifact/target/craftbukkit-1.0.1-R1.jar
+	wget -O $(DEPS)/CraftBukkit.jar http://ci.bukkit.org/job/dev-CraftBukkit/1846/artifact/target/craftbukkit-1.1-R3.jar
