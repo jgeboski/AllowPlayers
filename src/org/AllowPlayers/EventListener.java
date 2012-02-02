@@ -19,26 +19,39 @@ package org.AllowPlayers;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.plugin.PluginManager;
 
-public class APPlayerListener extends PlayerListener
+public class EventListener implements Listener
 {
     public AllowPlayers ap;
     
-    public APPlayerListener(AllowPlayers ap)
+    public EventListener(AllowPlayers ap)
     {
         this.ap = ap;
     }
     
+    public void register()
+    {
+        PluginManager pm;
+        
+        pm = ap.getServer().getPluginManager();
+        pm.registerEvents(this, ap);
+    }
+    
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e)
     {
         if(!ap.online)
             ap.removeRequest(e.getPlayer().getName());
     }
     
+    @EventHandler
     public void onPlayerLogin(PlayerLoginEvent e)
     {
         Player player;

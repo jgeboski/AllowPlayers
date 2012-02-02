@@ -25,10 +25,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.PluginManager;
 
 import org.AllowPlayers.command.CAllowPlayers;
 import org.AllowPlayers.command.CMCNet;
@@ -43,31 +40,26 @@ public class AllowPlayers extends JavaPlugin
     public Watcher watcher;
     public boolean online;
     
-    private APPlayerListener appl;
+    private EventListener events;
     
     public void onLoad()
     {
-        requests = new HashMap<String, Request>();
         config   = new APConfiguration(new File(getDataFolder(), "config.yml"));
+        events   = new EventListener(this);
+        requests = new HashMap<String, Request>();
         watcher  = new Watcher(this);
         online   = true;
-        appl     = new APPlayerListener(this);
     }
     
     public void onEnable()
     {
-        PluginManager pm;
-        
         config.load();
         
         getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
         getCommand("mcnet").setExecutor(new CMCNet(this));
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
         
-        pm = getServer().getPluginManager();
-        pm.registerEvent(Type.PLAYER_JOIN,  appl, Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_LOGIN, appl, Priority.Normal, this);
-        
+        events.register();
         watcher.start();
         
         Log.info("%s enabled", getDescription().getVersion());
