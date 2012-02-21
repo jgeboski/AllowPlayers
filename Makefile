@@ -17,7 +17,7 @@ DEP=.dep
 .SUFFIXES: .java .class
 
 SRCS=\
-  $(SRC)/org/AllowPlayers/APConfiguration.java \
+  $(SRC)/org/AllowPlayers/Configuration.java \
   $(SRC)/org/AllowPlayers/Log.java \
   $(SRC)/org/AllowPlayers/Message.java \
   $(SRC)/org/AllowPlayers/Request.java \

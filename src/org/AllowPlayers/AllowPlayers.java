@@ -36,7 +36,7 @@ public class AllowPlayers extends JavaPlugin
     public static final String pluginName = "AllowPlayers";
     
     public HashMap<String, Request> requests;
-    public APConfiguration config;
+    public Configuration config;
     public Watcher watcher;
     public boolean online;
     
@@ -44,7 +44,7 @@ public class AllowPlayers extends JavaPlugin
     
     public void onLoad()
     {
-        config   = new APConfiguration(new File(getDataFolder(), "config.yml"));
+        config   = new Configuration(new File(getDataFolder(), "config.yml"));
         events   = new EventListener(this);
         requests = new HashMap<String, Request>();
         watcher  = new Watcher(this);

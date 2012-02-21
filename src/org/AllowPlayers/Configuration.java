@@ -21,7 +21,7 @@ import java.io.File;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class APConfiguration extends YamlConfiguration
+public class Configuration extends YamlConfiguration
 {
     private File file;
     
@@ -29,7 +29,7 @@ public class APConfiguration extends YamlConfiguration
     public int timeout;
     public int connTimeout;
     
-    public APConfiguration(File file)
+    public Configuration(File file)
     {
         this.file = file;
         
