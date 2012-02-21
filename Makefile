@@ -1,28 +1,51 @@
 PLUGIN=AllowPlayers
+OUT=$(PLUGIN).jar
+
+JC=javac
+JFLAGS=-g
+
+JAR=jar
+MKDIR=mkdir
+RM=rm
+WGET=wget
+
 CWD=$(shell pwd)
+
 SRC=src
-DEPS=.deps
-OBJS=.objs
+DEP=.dep
 
-JAR=$(CWD)/$(PLUGIN).jar
+.SUFFIXES: .java .class
 
-SRCS=$(shell find $(SRC) -type f -name *.java -printf "%h/%f ")
-JDEPS=$(shell find $(DEPS) -type f -printf "%h/%f:")
+SRCS=\
+  $(SRC)/org/AllowPlayers/APConfiguration.java \
+  $(SRC)/org/AllowPlayers/Log.java \
+  $(SRC)/org/AllowPlayers/Message.java \
+  $(SRC)/org/AllowPlayers/Request.java \
+  $(SRC)/org/AllowPlayers/EventListener.java \
+  $(SRC)/org/AllowPlayers/Watcher.java \
+  $(SRC)/org/AllowPlayers/AllowPlayers.java \
+  $(SRC)/org/AllowPlayers/command/CAllowPlayers.java \
+  $(SRC)/org/AllowPlayers/command/CMCNet.java \
+  $(SRC)/org/AllowPlayers/command/COnlineMode.java
 
-all: deps objs jar
+DEPS=$(DEP)/CraftBukkit.jar:$(SRC)
+OBJS=$(SRCS:.java=.class)
 
-jar:
-	rm -f $(JAR)
-	jar cvf $(JAR) -C $(OBJS) .
+all: $(OUT)
 
-objs:
-	rm -rf $(OBJS)
-	mkdir -p $(OBJS)
-	cp $(SRC)/plugin.yml $(OBJS)
-	javac -cp $(JDEPS) -d $(OBJS) -g $(SRCS)
+$(OUT): objs
+	$(JAR) cf $(OUT) -C $(SRC) plugin.yml $(OBJS)
+
+objs: $(OBJS)
+
+%.class: %.java
+	$(JC) -classpath $(DEPS) -sourcepath $(SRC) $(JFLAGS) $<
 
 deps:
-	rm -rf $(DEPS)
-	mkdir -p $(DEPS)
+	$(RM)    -rf $(DEP)
+	$(MKDIR) -p  $(DEP)
 	
-	wget -O $(DEPS)/CraftBukkit.jar http://ci.bukkit.org/job/dev-CraftBukkit/1846/artifact/target/craftbukkit-1.1-R3.jar
+	$(WGET) -O $(DEP)/CraftBukkit.jar http://ci.bukkit.org/job/dev-CraftBukkit/1846/artifact/target/craftbukkit-1.1-R3.jar
+
+clean:
+	$(RM) -f $(OBJS) $(OUT)
