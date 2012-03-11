@@ -24,6 +24,11 @@
         </developer>
     </developers>
     
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/jgeboski/AllowPlayers/issues/</url>
+    </issueManagement>
+    
     <ciManagement>
         <system>jenkins</system>
         <url>http://ci.bitmissile.com/job/AllowPlayers/</url>
