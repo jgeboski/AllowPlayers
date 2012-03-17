@@ -44,14 +44,14 @@ public class EventListener implements Listener
         pm.registerEvents(this, ap);
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e)
     {
         if(!ap.online)
             ap.removeRequest(e.getPlayer().getName());
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent e)
     {
         Player player;
