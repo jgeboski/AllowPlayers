@@ -49,6 +49,7 @@ public class Watcher extends Thread
             
             try {
                 urlc = url.openConnection();
+                
                 urlc.setAllowUserInteraction(false);
                 urlc.setConnectTimeout(ap.config.connTimeout);
                 urlc.setReadTimeout(ap.config.connTimeout);
@@ -68,7 +69,6 @@ public class Watcher extends Thread
             } catch(InterruptedException e) {}
         }
         
-        /* Let's allow for rerunning when the plugin reloads */
         quit = false;
     }
     

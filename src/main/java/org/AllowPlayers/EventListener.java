@@ -72,8 +72,10 @@ public class EventListener implements Listener
                 "Minecraft.net is down. An admin will approve your " +
                 "login request. Try back shortly.");
             
-            ap.messagePermission("allowplayers.msg.request",
-                "%s%s is awaiting approval", ChatColor.YELLOW, splayer);
+            ap.broadcast(
+                "allowplayers.msg.request",
+                "%s%s is awaiting approval",
+                ChatColor.YELLOW, splayer);
         } else if(request.state == Request.ACCEPT) {
             if(!request.address.equals(e.getKickMessage())) {
                 ap.removeRequest(splayer);
@@ -81,7 +83,8 @@ public class EventListener implements Listener
                     "Your request IP did not match your login IP. " +
                     "Please try again.");
                 
-                ap.messagePermission("allowplayers.msg.request",
+                ap.broadcast(
+                    "allowplayers.msg.request",
                     "%s%s attempted to join with a different IP",
                     ChatColor.RED, splayer);
             } else {
@@ -92,14 +95,17 @@ public class EventListener implements Listener
                 "Minecraft.net is still down. Your login request" + 
                 "was REJECTED");
             
-            ap.messagePermission("allowplayers.msg.request",
-                "%s%s attempted to join", ChatColor.RED, splayer);
+            ap.broadcast(
+                "allowplayers.msg.request",
+                "%s%s attempted to join",
+                ChatColor.RED, splayer);
         } else {
             e.disallow(Result.KICK_OTHER,
                 "Minecraft.net is still down. Your login request " +
                 "is still pending approval.");
             
-            ap.messagePermission("allowplayers.msg.request",
+            ap.broadcast(
+                "allowplayers.msg.request",
                 "%s%s is still awaiting approval",
                 ChatColor.YELLOW, splayer);
         }

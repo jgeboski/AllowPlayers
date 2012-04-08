@@ -31,7 +31,7 @@ public class Request
     {
         this.address = address;
         this.player  = player;
-        state = PENDING;
+        this.state   = PENDING;
     }
     
     /**

@@ -35,7 +35,8 @@ public class CAllowPlayers implements CommandExecutor
         this.ap = ap;
     }
     
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    public boolean onCommand(CommandSender sender, Command command,
+                             String label, String[] args)
     {
         String cmd;
         
@@ -106,8 +107,7 @@ public class CAllowPlayers implements CommandExecutor
         if(t > size)
             t = size;
         
-        Message.info(sender,
-            "Showing %d to %d of %d requests", i, t, size);
+        Message.info(sender, "Showing %d to %d of %d requests", i, t, size);
         
         objs = ap.requests.values().toArray();
         
@@ -173,6 +173,6 @@ public class CAllowPlayers implements CommandExecutor
         if(!ap.hasPermission(sender, "allowplayers.msg.request"))
             Message.info(sender, msg);
         
-        ap.messagePermission("allowplayers.msg.request", msg);
+        ap.broadcast("allowplayers.msg.request", msg);
     }
 }

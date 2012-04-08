@@ -27,9 +27,7 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import org.AllowPlayers.command.CAllowPlayers;
-import org.AllowPlayers.command.CMCNet;
-import org.AllowPlayers.command.COnlineMode;
+import org.AllowPlayers.command.*;
 
 public class AllowPlayers extends JavaPlugin
 {
@@ -98,7 +96,7 @@ public class AllowPlayers extends JavaPlugin
      * @param format  A format string
      * @param args    Arguments corresponding to @param format
      **/
-    public void messagePermission(String perm, String format, Object ... args)
+    public void broadcast(String perm, String format, Object ... args)
     {
         Player[] players = getServer().getOnlinePlayers();
         
@@ -169,7 +167,7 @@ public class AllowPlayers extends JavaPlugin
         }
         
         if(msg != null)
-            messagePermission("allowplayers.msg.notify", msg);
+            broadcast("allowplayers.msg.notify", msg);
         
         this.online = online;
     }
