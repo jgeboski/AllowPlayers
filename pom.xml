@@ -72,7 +72,7 @@
         <resources>
             <resource>
                 <targetPath>.</targetPath>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
                 <directory>${project.basedir}/src/main/resources/</directory>
                 <includes>
                     <include>plugin.yml</include>

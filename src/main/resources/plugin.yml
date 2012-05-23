@@ -1,5 +1,5 @@
 name: AllowPlayers
-version: 0.5.0
+version: ${project.version}
 description: Allow players onto your server when minecraft.net is down
 author: jgeboski
 main: org.AllowPlayers.AllowPlayers
