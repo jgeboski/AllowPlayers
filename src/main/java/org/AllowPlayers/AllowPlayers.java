@@ -26,14 +26,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
-import org.AllowPlayers.command.*;
+import com.earth2me.essentials.Essentials;
+
+import org.AllowPlayers.command.CAllowPlayers;
+import org.AllowPlayers.command.COnlineMode;
 
 public class AllowPlayers extends JavaPlugin
 {
     public static final String pluginName = "AllowPlayers";
     
-    public HashMap<String, Request> requests;
+    public Essentials essentials;
     public Configuration config;
     public Watcher watcher;
     public boolean online;
@@ -44,19 +49,29 @@ public class AllowPlayers extends JavaPlugin
     {
         config   = new Configuration(new File(getDataFolder(), "config.yml"));
         events   = new EventListener(this);
-        requests = new HashMap<String, Request>();
         watcher  = new Watcher(this);
         online   = true;
     }
     
     public void onEnable()
     {
-        config.load();
+        PluginManager pm;
+        Plugin plugin;
+        
+        pm     = getServer().getPluginManager();
+        plugin = pm.getPlugin("Essentials");
+        
+        if(plugin == null) {
+            Log.severe("Unable to find Essentials");
+            return;
+        }
+        
+        essentials = (Essentials) plugin;
         
         getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
-        getCommand("mcnet").setExecutor(new CMCNet(this));
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
         
+        config.load();
         events.register();
         watcher.start();
     }
@@ -106,46 +121,6 @@ public class AllowPlayers extends JavaPlugin
         }
         
         Log.info(format, args);
-    }
-    
-    /**
-     * Creates a new player request
-     * 
-     * @param player   A string containing the player's name
-     * @param address  A string containing the player's address
-     **/
-    public void newRequest(String address, String player)
-    {
-        if((address.length() < 1) || (player.length() < 1))
-            return;
-        
-        if(getRequest(player) != null)
-            return;
-        
-        requests.put(player, new Request(address, player));
-    }
-    
-    /**
-     * Removes a player request by a player's name
-     * 
-     * @param player  A string containing the player's name
-     **/
-    public void removeRequest(String player)
-    {
-        if(player.length() >= 1)
-            requests.remove(player);
-    }
-    
-    /**
-     * Gets a player request by a player's name
-     * 
-     * @param player  A string containing the player's name
-     * 
-     * @return  On success, the player's request, otherwise FALSE
-     **/
-    public Request getRequest(String player)
-    {
-        return requests.get(player);
     }
     
     /**

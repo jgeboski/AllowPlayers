@@ -3,16 +3,13 @@ version: ${project.version}
 description: Allow players onto your server when minecraft.net is down
 author: jgeboski
 main: org.AllowPlayers.AllowPlayers
+depend: ['Essentials']
 
 commands:
   allowplayers:
-    description: Manage and view pending requests
+    description: Manage AllowPlayers
     aliases: ['ap']
-    usage: /<command> [[requests|reload] [accept|reject]] [[pagenumber] [playername]]
-  mcnet:
-    description: Minecraft.net management
-    aliases: ['mcn']
-    usage: /<command> [status|force] [check|online|offline]
+    usage: /<command> [check|reload]
   onlinemode:
     description: Enable/Disable online mode
     aliases: ['om']
@@ -22,17 +19,11 @@ permissions:
   allowplayers.ap:
     description: Access the allowplayers command
     default: op
-  allowplayers.ap.mod:
-    description: Accept/reject a pending request
+  allowplayers.ap.check:
+    description: Force a Minecraft.net check
     default: op
   allowplayers.ap.reload:
     description: Reload the configuration
-    default: op
-  allowplayers.mcn:
-    description: Access the mcnet command
-    default: op
-  allowplayers.mcn.force:
-    description: Force minecraft.net mode
     default: op
   allowplayers.onlinemode:
     description: Set the server's online mode
@@ -40,7 +31,3 @@ permissions:
   allowplayers.msg.notify:
     description: View Minecraft.net status messages
     default: op
-  allowplayers.msg.request:
-    description: View messages about requests
-    default: op
-    

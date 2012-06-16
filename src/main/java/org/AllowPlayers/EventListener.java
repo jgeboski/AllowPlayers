@@ -17,15 +17,15 @@
 
 package org.AllowPlayers;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.PluginManager;
+
+import com.earth2me.essentials.User;
 
 public class EventListener implements Listener
 {
@@ -43,71 +43,28 @@ public class EventListener implements Listener
         pm = ap.getServer().getPluginManager();
         pm.registerEvents(this, ap);
     }
-    
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent e)
-    {
-        if(!ap.online)
-            ap.removeRequest(e.getPlayer().getName());
-    }
+
     
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent e)
     {
         Player player;
-        String splayer;
-        Request request;
+        User user;
+        
         String addr;
         
         if(ap.online)
             return;
         
-        player  = e.getPlayer();
-        splayer = player.getName();
-        request = ap.getRequest(splayer);
+        addr   = e.getKickMessage();
+        player = e.getPlayer();
+        user   = ap.essentials.getUser(player);
         
-        if(request == null) {
-            ap.newRequest(e.getKickMessage(), splayer);
-            e.disallow(Result.KICK_OTHER,
-                "Minecraft.net is down. An admin will approve your " +
-                "login request. Try back shortly.");
-            
-            ap.broadcast(
-                "allowplayers.msg.request",
-                "%s%s is awaiting approval",
-                ChatColor.YELLOW, splayer);
-        } else if(request.state == Request.ACCEPT) {
-            if(!request.address.equals(e.getKickMessage())) {
-                ap.removeRequest(splayer);
-                e.disallow(Result.KICK_OTHER,
-                    "Your request IP did not match your login IP. " +
-                    "Please try again.");
-                
-                ap.broadcast(
-                    "allowplayers.msg.request",
-                    "%s%s attempted to join with a different IP",
-                    ChatColor.RED, splayer);
-            } else {
-                e.allow();
-            }
-        } else if(request.state == Request.REJECT) {
-            e.disallow(Result.KICK_OTHER,
-                "Minecraft.net is still down. Your login request" + 
-                "was REJECTED");
-            
-            ap.broadcast(
-                "allowplayers.msg.request",
-                "%s%s attempted to join",
-                ChatColor.RED, splayer);
-        } else {
-            e.disallow(Result.KICK_OTHER,
-                "Minecraft.net is still down. Your login request " +
-                "is still pending approval.");
-            
-            ap.broadcast(
-                "allowplayers.msg.request",
-                "%s%s is still awaiting approval",
-                ChatColor.YELLOW, splayer);
-        }
+        if((user != null) && addr.equals(user.getLastLoginAddress()))
+            return;
+        
+        e.disallow(Result.KICK_OTHER,
+                   "Minecraft.net is offline, and you're not " +
+                   "recognized by our system; try back later");
     }
 }

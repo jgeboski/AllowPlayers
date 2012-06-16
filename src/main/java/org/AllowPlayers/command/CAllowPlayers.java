@@ -24,7 +24,6 @@ import org.bukkit.command.CommandSender;
 
 import org.AllowPlayers.AllowPlayers;
 import org.AllowPlayers.Message;
-import org.AllowPlayers.Request;
 
 public class CAllowPlayers implements CommandExecutor
 {
@@ -43,96 +42,38 @@ public class CAllowPlayers implements CommandExecutor
         if(!ap.hasPermission(sender, "allowplayers.ap"))
             return true;
         
-        if(args.length < 1) {
-            Message.info(sender, command.getUsage());
-            return true;
-        }
-        
-        if(args[0].equalsIgnoreCase("requests")) {
-            requests(sender, ((args.length == 2) ? args[1] : "0"));
-            return true;
-        } else if(args[0].equalsIgnoreCase("reload")) {
+        if(args.length < 1)
+            info(sender);
+        else if(args[0].equalsIgnoreCase("check"))
+            check(sender);
+        else if(args[0].equalsIgnoreCase("reload"))
             reload(sender);
-            return true;
-        }
-        
-        if(args.length != 2) {
-            Message.info(sender, command.getUsage());
-            return true;
-        }
-        
-        cmd = args[0].toLowerCase();
-        
-        if(cmd.matches("accept|approve|allow"))
-            accept(sender, args[1], true);
-        else if(cmd.matches("reject|deny|disallow"))
-            accept(sender, args[1], false);
         else
             Message.info(sender, command.getUsage());
         
         return true;
     }
     
-    private void requests(CommandSender sender, String page)
+    private void info(CommandSender sender)
     {
-        int size, p, i, t;
-        Object[] objs;
-        Request r;
+        String msg = "Minecraft.net Status: ";
         
-        ChatColor color;
-        char status;
+        if(ap.online)
+            msg += ChatColor.GREEN + "ONLINE";
+        else
+            msg += ChatColor.RED + "OFFLINE";
         
-        size = ap.requests.size();
-        
-        if(size < 1) {
-            Message.info(sender, "There are no requests in the queue");
+        Message.info(sender, ap.getDescription().getFullName());
+        Message.info(sender, msg);
+    }
+    
+    private void check(CommandSender sender)
+    {
+        if(!ap.hasPermission(sender, "allowplayers.ap.check"))
             return;
-        }
         
-        try {
-            p = Integer.parseInt(page);
-        } catch(NumberFormatException e) {
-            Message.info(sender, "That's not a page number!");
-            return;
-        }
-        
-        t = (int) Math.ceil(((double) size) / ((double) ap.config.maxPerPage));
-        
-        if(p > t)
-            p = t;
-        
-        i = (p >= 2) ? ((p - 1) * ap.config.maxPerPage) : 0;
-        t = i + ap.config.maxPerPage;
-        
-        if(t > size)
-            t = size;
-        
-        Message.info(sender, "Showing %d to %d of %d requests", i, t, size);
-        
-        objs = ap.requests.values().toArray();
-        
-        for(; (i < t) && (i < size); i++) {
-            r = (Request) objs[i];
-            
-            switch(r.state) {
-            case Request.ACCEPT:
-                color  = ChatColor.GREEN;
-                status = 'A';
-                break;
-            
-            case Request.REJECT:
-                color  = ChatColor.RED;
-                status = 'R';
-                break;
-            
-            default:
-                color  = ChatColor.YELLOW;
-                status = 'P';
-            }
-            
-            Message.info(sender, "%s[%c] %s - %s",
-                color, status, r.player, r.address);
-        }
+        ap.watcher.reset();
+        Message.info(sender, "Checking Minecraft.net status...");
     }
     
     private void reload(CommandSender sender)
@@ -141,38 +82,8 @@ public class CAllowPlayers implements CommandExecutor
             return;
         
         ap.config.load();
-        ap.requests.clear();
         ap.watcher.reset();
         
         Message.info(sender, "Configuration reloaded");
-    }
-    
-    private void accept(CommandSender sender, String player, boolean accept)
-    {
-        Request request;
-        
-        if(!ap.hasPermission(sender, "allowplayers.ap.mod"))
-            return;
-        
-        request = ap.getRequest(player);
-        
-        if(request == null) {
-            Message.severe(sender, "Invalid player");
-            return;
-        }
-        
-        if(accept)
-            request.accept();
-        else
-            request.reject();
-        
-        String msg = String.format("%s%s %s %s's login request",
-            (accept ? ChatColor.GREEN : ChatColor.RED), sender.getName(),
-            (accept ? "accepted" : "rejected"), request.player);
-        
-        if(!ap.hasPermission(sender, "allowplayers.msg.request"))
-            Message.info(sender, msg);
-        
-        ap.broadcast("allowplayers.msg.request", msg);
     }
 }

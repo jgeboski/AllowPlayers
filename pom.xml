@@ -7,7 +7,7 @@
     <groupId>org.AllowPlayers</groupId>
     <artifactId>AllowPlayers</artifactId>
     <packaging>jar</packaging>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <name>AllowPlayers</name>
     <url>https://github.com/jgeboski/AllowPlayers/</url>
     
@@ -56,6 +56,11 @@
     </repositories>
     
     <dependencies>
+        <dependency>
+            <groupId>com.earth2me.essentials</groupId>
+            <artifactId>Essentials</artifactId>
+            <version>[latest,)</version>
+        </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
