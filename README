@@ -1,23 +1,20 @@
 AllowPlayers is a simple plugin for bukkit which allows players access
 to a server that runs in online mode when minecraft.net is down.
 
+Dependencies:
+  - Essentials: http://dev.bukkit.org/server-mods/essentials/
+
 Commands:
-    - allowplayers - Manage and view pending requests
-        - Aliases: ap
-        - Usage: /<command> [[requests|reload] [accept|reject]] [[pagenumber] [playername]]
-    - mcnet - Minecraft.net management
-        - Aliases: mcn
-        - Usage: /<command> [status|force] [check|online|offline]
-    - onlinemode - Sets the server's online mode state
-        - Aliases: om
-        - Usage: /<command> [status|enable|disable]
+  - allowplayers - Manage AllowPlayers
+    - Aliases: ap
+    - Usage: /<command> [check|reload]
+  - onlinemode - Sets the server's online mode state
+    - Aliases: om
+    - Usage: /<command> [status|enable|disable]
     
 Permissions:
-    - allowplayers.ap            - Access the allowplayers command
-        - allowplayers.ap.mod    - Accept/reject a pending request
-        - allowplayers.ap.reload - Reload the configuration
-    - allowplayers.mcn           - Access the mcnet command
-        - allowplayers.mcn.force - Force minecraft.net mode
-    - allowplayers.onlinemode    - Set the server's online mode
-    - allowplayers.msg.notify    - View Minecraft.net status messages
-    - allowplayers.msg.request   - View messages about requests
+  - allowplayers.ap          - Access the allowplayers command
+    - allowplayers.ap.check  - Force a Minecraft.net check
+    - allowplayers.ap.reload - Reload the configuration
+  - allowplayers.onlinemode  - Set the server's online mode
+  - allowplayers.msg.notify  - View Minecraft.net status messages
