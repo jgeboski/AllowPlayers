@@ -155,6 +155,6 @@ public class AllowPlayers extends JavaPlugin
      **/
     public void setOnlineMode(boolean mode)
     {
-        ((MinecraftServer) ((CraftServer) getServer()).getServer()).onlineMode = mode;
+        ((MinecraftServer) ((CraftServer) getServer()).getServer()).setOnlineMode(mode);
     }
 }
