@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.earth2me.essentials</groupId>
             <artifactId>Essentials</artifactId>
-            <version>[latest,)</version>
+            <version>[2.9,)</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
