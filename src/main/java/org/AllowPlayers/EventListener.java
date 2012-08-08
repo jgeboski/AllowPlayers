@@ -25,8 +25,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.PluginManager;
 
-import com.earth2me.essentials.User;
-
 public class EventListener implements Listener
 {
     public AllowPlayers ap;
@@ -48,19 +46,16 @@ public class EventListener implements Listener
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent e)
     {
-        Player player;
-        User user;
-
-        String addr;
+        Player p;
+        String ip;
 
         if(ap.online)
             return;
 
-        addr   = e.getKickMessage();
-        player = e.getPlayer();
-        user   = ap.essentials.getUser(player);
+        p  = e.getPlayer();
+        ip = e.getKickMessage();
 
-        if((user != null) && addr.equals(user.getLastLoginAddress()))
+        if(ap.checkPlayerIP(p, ip))
             return;
 
         e.disallow(Result.KICK_OTHER,

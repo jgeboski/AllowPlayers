@@ -29,7 +29,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import be.Balor.bukkit.AdminCmd.AdminCmd;
+import be.Balor.Player.ACPlayer;
+
 import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.User;
 
 import org.AllowPlayers.command.CAllowPlayers;
 import org.AllowPlayers.command.COnlineMode;
@@ -38,35 +42,51 @@ public class AllowPlayers extends JavaPlugin
 {
     public static final String pluginName = "AllowPlayers";
 
-    public Essentials essentials;
     public Configuration config;
     public Watcher watcher;
     public boolean online;
 
     private EventListener events;
 
+    public AdminCmd admincmd;
+    public Essentials essentials;
+
     public void onLoad()
     {
-        config   = new Configuration(new File(getDataFolder(), "config.yml"));
-        events   = new EventListener(this);
-        watcher  = new Watcher(this);
-        online   = true;
+        config  = new Configuration(new File(getDataFolder(), "config.yml"));
+        events  = new EventListener(this);
+        watcher = new Watcher(this);
+        online  = true;
+
+        admincmd   = null;
+        essentials = null;
     }
 
     public void onEnable()
     {
         PluginManager pm;
-        Plugin plugin;
+        Plugin p;
+        boolean b;
 
-        pm     = getServer().getPluginManager();
-        plugin = pm.getPlugin("Essentials");
+        pm = getServer().getPluginManager();
+        p  = pm.getPlugin("AdminCmd");
 
-        if(plugin == null) {
-            Log.severe("Unable to find Essentials");
+        if(p != null)
+            admincmd = (AdminCmd) p;
+
+        p = pm.getPlugin("Essentials");
+
+        if(p != null)
+            essentials = (Essentials) p;
+
+        b = (admincmd == null)    && (essentials == null) &&
+            !admincmd.isEnabled() && !essentials.isEnabled();
+
+        if(b) {
+            Log.severe("Unable to find AdminCmd or Essentials");
+            setEnabled(false);
             return;
         }
-
-        essentials = (Essentials) plugin;
 
         getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
@@ -135,10 +155,10 @@ public class AllowPlayers extends JavaPlugin
 
         if(!this.online && online) {
             msg = ChatColor.GREEN + "Minecraft.net has come back " +
-                "online.";
+                                    "online.";
         } else if(this.online && !online) {
-            msg = ChatColor.RED + "Minecraft.net has gone " +
-                "offline. Do not logout!";
+            msg = ChatColor.RED   + "Minecraft.net has gone " +
+                                    "offline. Do not logout!";
         }
 
         if(msg != null)
@@ -156,5 +176,42 @@ public class AllowPlayers extends JavaPlugin
     public void setOnlineMode(boolean mode)
     {
         ((MinecraftServer) ((CraftServer) getServer()).getServer()).setOnlineMode(mode);
+    }
+
+    /**
+     * Compare a player's IP to the locally stored address
+     *
+     * @param player  A Player
+     * @param ip      A String containing the player's IP
+     *
+     * @return  TRUE if the player's address matched, otherwise FALSE
+     **/
+    public boolean checkPlayerIP(Player player, String ip)
+    {
+        String la;
+
+        if(ip.length() < 1)
+            return false;
+
+        if(admincmd != null) {
+            ACPlayer p;
+
+            p  = ACPlayer.getPlayer(player);
+            la = p.getInformation("last-ip").getString();
+            la = la.replaceAll("/", "");
+
+            return la.equals(ip);
+        }
+
+        if(essentials != null) {
+            User u;
+
+            u = essentials.getUser(player);
+            la = u.getLastLoginAddress();
+
+            return la.equals(ip);
+        }
+
+        return false;
     }
 }

@@ -2,6 +2,8 @@ AllowPlayers is a simple plugin for bukkit which allows players access
 to a server that runs in online mode when minecraft.net is down.
 
 Dependencies:
+  - AdminCmd:   http://dev.bukkit.org/server-mods/admincmd/
+   OR
   - Essentials: http://dev.bukkit.org/server-mods/essentials/
 
 Commands:

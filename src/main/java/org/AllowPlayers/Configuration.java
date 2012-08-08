@@ -25,7 +25,6 @@ public class Configuration extends YamlConfiguration
 {
     private File file;
 
-    public int maxPerPage;
     public int timeout;
     public int connTimeout;
 
