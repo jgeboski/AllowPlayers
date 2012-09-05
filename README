@@ -9,11 +9,11 @@ Dependencies:
 Commands:
   - allowplayers - Manage AllowPlayers
     - Aliases: ap
-    - Usage: /<command> [check|reload]
+    - Usage: /<command> [check|enable|disable|reload]
   - onlinemode - Sets the server's online mode state
     - Aliases: om
     - Usage: /<command> [status|enable|disable]
-    
+
 Permissions:
   - allowplayers.ap          - Access the allowplayers command
     - allowplayers.ap.check  - Force a Minecraft.net check

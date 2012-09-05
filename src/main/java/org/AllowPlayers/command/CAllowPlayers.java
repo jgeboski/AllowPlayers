@@ -37,34 +37,30 @@ public class CAllowPlayers implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args)
     {
-        String cmd;
+        String c;
 
         if(!ap.hasPermission(sender, "allowplayers.command.ap"))
             return true;
 
-        if(args.length < 1)
+        if(args.length < 1) {
             info(sender);
-        else if(args[0].equalsIgnoreCase("check"))
+            return true;
+        }
+
+        c = args[0].toLowerCase();
+
+        if(c.matches("c|check"))
             check(sender);
-        else if(args[0].equalsIgnoreCase("reload"))
+        else if(c.matches("e|enable|on|online"))
+            enable(sender);
+        else if(c.matches("d|disable|off|offline"))
+            disable(sender);
+        else if(c.matches("r|rel|reload"))
             reload(sender);
         else
             Message.info(sender, command.getUsage());
 
         return true;
-    }
-
-    private void info(CommandSender sender)
-    {
-        String msg = "Minecraft.net Status: ";
-
-        if(ap.online)
-            msg += ChatColor.GREEN + "ONLINE";
-        else
-            msg += ChatColor.RED + "OFFLINE";
-
-        Message.info(sender, ap.getDescription().getFullName());
-        Message.info(sender, msg);
     }
 
     private void check(CommandSender sender)
@@ -76,6 +72,54 @@ public class CAllowPlayers implements CommandExecutor
         Message.info(sender, "Checking Minecraft.net status...");
     }
 
+    private void disable(CommandSender sender)
+    {
+        if(!ap.hasPermission(sender, "allowplayers.command.toggle"))
+            return;
+
+        ap.enabled = false;
+        ap.watcher.reset();
+        ap.setOnlineMode(true);
+
+        Message.info(sender, "Toggled off.");
+    }
+
+    public void enable(CommandSender sender)
+    {
+        if(!ap.hasPermission(sender, "allowplayers.command.toggle"))
+            return;
+
+        ap.enabled = true;
+        ap.watcher.reset();
+
+        Message.info(sender, "Toggled on.");
+    }
+
+    private void info(CommandSender sender)
+    {
+        String msg;
+
+        Message.info(sender, "%s%s", ChatColor.GRAY,
+                     ap.getDescription().getFullName());
+
+        msg = "AllowPlayers Status:  ";
+
+        if(ap.enabled)
+            msg += ChatColor.GREEN + "Enabled";
+        else
+            msg += ChatColor.RED   + "Disabled";
+
+        Message.info(sender, msg);
+        msg = "Minecraft.net Status: ";
+
+        if(ap.online)
+            msg += ChatColor.GREEN + "Online";
+        else
+            msg += ChatColor.RED   + "Offline";
+
+        Message.info(sender, msg);
+    }
+
     private void reload(CommandSender sender)
     {
         if(!ap.hasPermission(sender, "allowplayers.command.reload"))
@@ -84,6 +128,6 @@ public class CAllowPlayers implements CommandExecutor
         ap.config.load();
         ap.watcher.reset();
 
-        Message.info(sender, "Configuration reloaded");
+        Message.info(sender, "Configuration reloaded.");
     }
 }

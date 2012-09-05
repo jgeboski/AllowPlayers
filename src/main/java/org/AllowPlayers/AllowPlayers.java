@@ -47,6 +47,8 @@ public class AllowPlayers extends JavaPlugin
 
     public Configuration config;
     public Watcher watcher;
+
+    public boolean enabled;
     public boolean online;
 
     private EventListener events;
@@ -60,6 +62,8 @@ public class AllowPlayers extends JavaPlugin
         config  = new Configuration(new File(getDataFolder(), "config.yml"));
         events  = new EventListener(this);
         watcher = new Watcher(this);
+
+        enabled = true;
         online  = true;
 
         admincmd    = null;

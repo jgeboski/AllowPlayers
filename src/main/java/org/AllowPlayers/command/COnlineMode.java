@@ -36,22 +36,26 @@ public class COnlineMode implements CommandExecutor
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
+        String c;
+
         if(!ap.hasPermission(sender, "allowplayers.command.onlinemode"))
             return true;
 
         if(args.length < 1) {
-            Message.info(sender, command.getUsage());
+            info(sender);
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("enable")) {
+        c = args[0].toLowerCase();
+
+        if(c.matches("e|enable|on|online")) {
             ap.setOnlineMode(true);
-            onlineModeToSender(sender);
-        } else if(args[0].equalsIgnoreCase("disable")) {
+            info(sender);
+        } else if(c.matches("d|disable|off|offline")) {
             ap.setOnlineMode(false);
-            onlineModeToSender(sender);
-        } else if(args[0].equalsIgnoreCase("status")) {
-            onlineModeToSender(sender);
+            info(sender);
+        } else if(c.matches("s|stat|status")) {
+            info(sender);
         } else {
             Message.info(sender, command.getUsage());
         }
@@ -59,14 +63,16 @@ public class COnlineMode implements CommandExecutor
         return true;
     }
 
-    private void onlineModeToSender(CommandSender sender)
+    private void info(CommandSender sender)
     {
-        String msg = "Online Mode: ";
+        String msg;
+
+        msg = "Online Mode: ";
 
         if(ap.getServer().getOnlineMode())
-            msg += ChatColor.GREEN + "ENABLED";
+            msg += ChatColor.GREEN + "Enabled";
         else
-            msg += ChatColor.RED + "DISABLED";
+            msg += ChatColor.RED   + "Disabled";
 
         Message.info(sender, msg);
     }

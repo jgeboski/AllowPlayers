@@ -49,7 +49,7 @@ public class EventListener implements Listener
         Player p;
         String ip;
 
-        if(ap.online)
+        if(!ap.enabled || ap.online)
             return;
 
         p  = e.getPlayer();

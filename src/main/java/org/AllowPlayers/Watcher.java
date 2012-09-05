@@ -43,23 +43,25 @@ public class Watcher extends Thread
 
     public void run()
     {
+        URLConnection urlc;
+
         while(!quit)
         {
-            URLConnection urlc;
+            if(ap.enabled) {
+                try {
+                    urlc = url.openConnection();
 
-            try {
-                urlc = url.openConnection();
+                    urlc.setAllowUserInteraction(false);
+                    urlc.setConnectTimeout(ap.config.connTimeout);
+                    urlc.setReadTimeout(ap.config.connTimeout);
+                    urlc.getContent();
 
-                urlc.setAllowUserInteraction(false);
-                urlc.setConnectTimeout(ap.config.connTimeout);
-                urlc.setReadTimeout(ap.config.connTimeout);
-                urlc.getContent();
-
-                ap.setOnline(true);
-                ap.setOnlineMode(true);
-            } catch(IOException e) {
-                ap.setOnline(false);
-                ap.setOnlineMode(false);
+                    ap.setOnline(true);
+                    ap.setOnlineMode(true);
+                } catch(IOException e) {
+                    ap.setOnline(false);
+                    ap.setOnlineMode(false);
+                }
             }
 
             try {
