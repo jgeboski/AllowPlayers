@@ -215,7 +215,9 @@ public class AllowPlayers extends JavaPlugin
 
             p  = ACPlayer.getPlayer(player);
             la = p.getInformation("last-ip").getString();
-            la = la.replaceAll("/", "");
+
+            if(la != null)
+                la = la.replaceAll("/", "");
 
             return ip.equals(la);
         }
