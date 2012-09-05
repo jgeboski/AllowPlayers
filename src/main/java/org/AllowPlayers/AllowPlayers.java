@@ -35,6 +35,9 @@ import be.Balor.Player.ACPlayer;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
 
+import net.ess3.api.IEssentials;
+import net.ess3.api.IUser;
+
 import org.AllowPlayers.command.CAllowPlayers;
 import org.AllowPlayers.command.COnlineMode;
 
@@ -50,6 +53,7 @@ public class AllowPlayers extends JavaPlugin
 
     public AdminCmd admincmd;
     public Essentials essentials;
+    public IEssentials essentials3;
 
     public void onLoad()
     {
@@ -58,32 +62,15 @@ public class AllowPlayers extends JavaPlugin
         watcher = new Watcher(this);
         online  = true;
 
-        admincmd   = null;
-        essentials = null;
+        admincmd    = null;
+        essentials  = null;
+        essentials3 = null;
     }
 
     public void onEnable()
     {
-        PluginManager pm;
-        Plugin p;
-        boolean b;
-
-        pm = getServer().getPluginManager();
-        p  = pm.getPlugin("AdminCmd");
-
-        if(p != null)
-            admincmd = (AdminCmd) p;
-
-        p = pm.getPlugin("Essentials");
-
-        if(p != null)
-            essentials = (Essentials) p;
-
-        b = (admincmd == null)    && (essentials == null) &&
-            !admincmd.isEnabled() && !essentials.isEnabled();
-
-        if(b) {
-            Log.severe("Unable to find AdminCmd or Essentials");
+        if(!findPlugins()) {
+            Log.severe("Unable to find: AdminCmd, Essentials, or Essentials-3");
             setEnabled(false);
             return;
         }
@@ -102,6 +89,36 @@ public class AllowPlayers extends JavaPlugin
             watcher.quit();
             watcher.join();
         } catch(Exception e) {}
+    }
+
+    private boolean findPlugins()
+    {
+        PluginManager pm;
+        Plugin p;
+
+        pm = getServer().getPluginManager();
+        p  = pm.getPlugin("AdminCmd");
+
+        if((p != null) && p.isEnabled()) {
+            admincmd = (AdminCmd) p;
+            return true;
+        }
+
+        p  = pm.getPlugin("Essentials");
+
+        if((p != null) && p.isEnabled()) {
+            essentials = (Essentials) p;
+            return true;
+        }
+
+        p  = pm.getPlugin("Essentials-3");
+
+        if((p != null) && p.isEnabled()) {
+            essentials3 = ((net.ess3.bukkit.BukkitPlugin) p).getEssentials();
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -200,16 +217,25 @@ public class AllowPlayers extends JavaPlugin
             la = p.getInformation("last-ip").getString();
             la = la.replaceAll("/", "");
 
-            return la.equals(ip);
+            return ip.equals(la);
         }
 
         if(essentials != null) {
             User u;
 
-            u = essentials.getUser(player);
+            u  = essentials.getUser(player);
             la = u.getLastLoginAddress();
 
-            return la.equals(ip);
+            return ip.equals(la);
+        }
+
+        if(essentials3 != null) {
+            IUser iu;
+
+            iu = essentials3.getUserMap().getUser(player);
+            la = iu.getData().getIpAddress();
+
+            return ip.equals(la);
         }
 
         return false;
