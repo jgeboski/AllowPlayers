@@ -162,7 +162,7 @@ public class AllowPlayers extends JavaPlugin
         }
 
         if(msg != null)
-            broadcast("allowplayers.msg.notify", msg);
+            broadcast("allowplayers.message.notify", msg);
 
         this.online = online;
     }

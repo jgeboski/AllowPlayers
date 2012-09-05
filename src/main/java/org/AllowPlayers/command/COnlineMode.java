@@ -36,7 +36,7 @@ public class COnlineMode implements CommandExecutor
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if(!ap.hasPermission(sender, "allowplayers.onlinemode"))
+        if(!ap.hasPermission(sender, "allowplayers.command.onlinemode"))
             return true;
 
         if(args.length < 1) {
