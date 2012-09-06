@@ -125,8 +125,7 @@ public class CAllowPlayers implements CommandExecutor
         if(!ap.hasPermission(sender, "allowplayers.command.reload"))
             return;
 
-        ap.config.load();
-        ap.watcher.reset();
+        ap.reload();
 
         Message.info(sender, "Configuration reloaded.");
     }

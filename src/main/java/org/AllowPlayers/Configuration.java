@@ -28,12 +28,20 @@ public class Configuration extends YamlConfiguration
     public int timeout;
     public int connTimeout;
 
+    public boolean ircEnabled;
+    public boolean ircColored;
+    public String  ircTag;
+
     public Configuration(File file)
     {
         this.file = file;
 
         timeout     = 60000;
         connTimeout = 10000;
+
+        ircEnabled  = false;
+        ircColored  = true;
+        ircTag      = "allowplayers";
     }
 
     public void load()
@@ -47,6 +55,10 @@ public class Configuration extends YamlConfiguration
         timeout     = getInt("watcher.timeout",           timeout);
         connTimeout = getInt("watcher.connectionTimeout", connTimeout);
 
+        ircEnabled  = getBoolean("irc.enabled", ircEnabled);
+        ircColored  = getBoolean("irc.colored", ircEnabled);
+        ircTag      = getString("irc.tag",      ircTag);
+
         if(!file.exists())
             save();
     }
@@ -55,6 +67,10 @@ public class Configuration extends YamlConfiguration
     {
         set("watcher.timeout",           timeout);
         set("watcher.connectionTimeout", connTimeout);
+
+        set("irc.enabled", ircEnabled);
+        set("irc.colored", ircEnabled);
+        set("irc.tag",     ircTag);
 
         try {
             super.save(file);

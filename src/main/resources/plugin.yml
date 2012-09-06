@@ -3,7 +3,7 @@ version: ${project.version}
 description: Allow players onto your server when minecraft.net is down
 author: jgeboski
 main: org.AllowPlayers.AllowPlayers
-softdepend: ['AdminCmd', 'Essentials', 'Essentials-3']
+softdepend: ['AdminCmd', 'CraftIRC', 'Essentials', 'Essentials-3']
 
 commands:
   allowplayers:

@@ -67,6 +67,11 @@
             <version>[2.9,)</version>
         </dependency>
         <dependency>
+            <groupId>com.ensifera</groupId>
+            <artifactId>CraftIRC</artifactId>
+            <version>[3.7.0-SNAPSHOT,)</version>
+        </dependency>
+        <dependency>
             <groupId>net.essentials3</groupId>
             <artifactId>Essentials</artifactId>
             <version>[3.0-SNAPSHOT,)</version>

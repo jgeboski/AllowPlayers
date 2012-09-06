@@ -35,6 +35,10 @@ import be.Balor.Player.ACPlayer;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
 
+import com.ensifera.animosity.craftirc.CraftIRC;
+import com.ensifera.animosity.craftirc.EndPoint;
+import com.ensifera.animosity.craftirc.RelayedMessage;
+
 import net.ess3.api.IEssentials;
 import net.ess3.api.IUser;
 
@@ -53,6 +57,9 @@ public class AllowPlayers extends JavaPlugin
 
     private EventListener events;
 
+    public CraftIRC craftirc;
+    public APPoint apPoint;
+
     public AdminCmd admincmd;
     public Essentials essentials;
     public IEssentials essentials3;
@@ -65,6 +72,9 @@ public class AllowPlayers extends JavaPlugin
 
         enabled = true;
         online  = true;
+
+        craftirc    = null;
+        apPoint     = null;
 
         admincmd    = null;
         essentials  = null;
@@ -83,6 +93,10 @@ public class AllowPlayers extends JavaPlugin
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
 
         config.load();
+
+        if(config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
+            config.ircEnabled = false;
+
         events.register();
         watcher.start();
     }
@@ -95,33 +109,65 @@ public class AllowPlayers extends JavaPlugin
         } catch(Exception e) {}
     }
 
+    public void reload()
+    {
+        if(config.ircEnabled)
+            craftirc.unregisterEndPoint(config.ircTag);
+
+        config.load();
+
+        if(config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
+            config.ircEnabled = false;
+
+        watcher.reset();
+    }
+
     private boolean findPlugins()
     {
         PluginManager pm;
         Plugin p;
 
         pm = getServer().getPluginManager();
-        p  = pm.getPlugin("AdminCmd");
+        p  = pm.getPlugin("CraftIRC");
+
+        if((p != null) && p.isEnabled()) {
+            craftirc = (CraftIRC) p;
+            apPoint  = new APPoint();
+        }
+
+        p = pm.getPlugin("AdminCmd");
 
         if((p != null) && p.isEnabled()) {
             admincmd = (AdminCmd) p;
             return true;
         }
 
-        p  = pm.getPlugin("Essentials");
+        p = pm.getPlugin("Essentials");
 
         if((p != null) && p.isEnabled()) {
             essentials = (Essentials) p;
             return true;
         }
 
-        p  = pm.getPlugin("Essentials-3");
+        p = pm.getPlugin("Essentials-3");
 
         if((p != null) && p.isEnabled()) {
             essentials3 = ((net.ess3.bukkit.BukkitPlugin) p).getEssentials();
             return true;
         }
 
+        return false;
+    }
+
+    private boolean registerEndPoint(String tag, Object ep)
+    {
+        if(craftirc == null)
+            return false;
+
+        if(craftirc.registerEndPoint(tag, (EndPoint) ep))
+            return true;
+
+        Log.severe("Unable to register CraftIRC tag: %s", tag);
         return false;
     }
 
@@ -154,14 +200,36 @@ public class AllowPlayers extends JavaPlugin
      **/
     public void broadcast(String perm, String format, Object ... args)
     {
-        Player[] players = getServer().getOnlinePlayers();
+        String msg;
 
-        for(Player player : players) {
-            if(player.hasPermission(perm))
-                Message.info((CommandSender) player, format, args);
+        msg = String.format(format, args);
+
+        for(Player p : getServer().getOnlinePlayers()) {
+            if(p.hasPermission(perm))
+                Message.info(p, msg);
         }
 
         Log.info(format, args);
+
+        Log.info("IRC Status: %b", config.ircEnabled);
+
+        if(!config.ircEnabled)
+            return;
+
+        RelayedMessage rmsg = craftirc.newMsg(apPoint, null, "chat");
+
+        if(!config.ircColored)
+            msg = ChatColor.stripColor(msg);
+
+        rmsg.setField("realSender", pluginName);
+        rmsg.setField("sender",     pluginName);
+        rmsg.setField("message",    msg);
+
+        if(rmsg.post())
+            return;
+
+        registerEndPoint(config.ircTag, apPoint);
+        rmsg.post();
     }
 
     /**
