@@ -47,23 +47,25 @@ public class EventListener implements Listener
     public void onPlayerLogin(PlayerLoginEvent e)
     {
         Player p;
+        String s;
         String ip;
 
         if(!ap.enabled || ap.online)
             return;
 
         p  = e.getPlayer();
+        s  = p.getName();
         ip = e.getKickMessage();
 
         if(ap.checkPlayerIP(p, ip)) {
-            Log.info("%s [%s] was granted access to join", p, ip);
+            Log.info("%s [%s] granted access to join", s, ip);
             return;
         }
 
         e.disallow(Result.KICK_OTHER,
-                   "Minecraft.net is offline, and you're not " +
-                   "recognized by our system; try back later");
+                   "Minecraft.net is offline, and you are not " +
+                   "recognized by our system. Try back later.");
 
-        Log.info("%s [%s] was denied access to join", p, ip);
+        Log.info("%s [%s] denied access to join", s, ip);
     }
 }
