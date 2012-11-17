@@ -211,8 +211,6 @@ public class AllowPlayers extends JavaPlugin
 
         Log.info(format, args);
 
-        Log.info("IRC Status: %b", config.ircEnabled);
-
         if(!config.ircEnabled)
             return;
 
