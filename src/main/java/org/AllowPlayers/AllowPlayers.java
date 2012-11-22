@@ -103,6 +103,9 @@ public class AllowPlayers extends JavaPlugin
 
     public void onDisable()
     {
+        if(config.ircEnabled)
+            craftirc.unregisterEndPoint(config.ircTag);
+
         try {
             watcher.quit();
             watcher.join();
