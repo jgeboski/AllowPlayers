@@ -18,12 +18,11 @@
 package org.AllowPlayers;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import net.minecraft.server.MinecraftServer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
@@ -265,7 +264,29 @@ public class AllowPlayers extends JavaPlugin
      **/
     public void setOnlineMode(boolean mode)
     {
-        ((MinecraftServer) ((CraftServer) getServer()).getServer()).setOnlineMode(mode);
+        Object o;
+        Class  c;
+        Method m;
+
+        /* Some hackery to with the CraftBukkit package naming */
+
+        o = getServer();
+        c = o.getClass();
+
+        try {
+            m = c.getDeclaredMethod("getServer");
+            o = m.invoke(o);
+
+            c = o.getClass();
+            /* DedicatedServer -> MinecraftServer */
+            c = c.getSuperclass();
+
+            m = c.getDeclaredMethod("setOnlineMode", boolean.class);
+            m.invoke(o, mode);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
     /**
