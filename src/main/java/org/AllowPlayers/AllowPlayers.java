@@ -173,14 +173,6 @@ public class AllowPlayers extends JavaPlugin
         return false;
     }
 
-    /**
-     * Test if a CommandSender has a specific permission
-     *
-     * @param sender  A CommandSender
-     * @param perm    A string containing the permission node
-     *
-     * @return TRUE if the player has permission, otherwise FALSE
-     **/
     public boolean hasPermissionM(CommandSender sender, String perm)
     {
         if (sender.hasPermission(perm))
@@ -190,13 +182,6 @@ public class AllowPlayers extends JavaPlugin
         return false;
     }
 
-    /**
-     * Sends a message to all online players with a specific permission
-     *
-     * @param perm    A string containing the permission node
-     * @param format  A format string
-     * @param args    Arguments corresponding to @param format
-     **/
     public void broadcast(String perm, String format, Object ... args)
     {
         String msg;
@@ -229,12 +214,6 @@ public class AllowPlayers extends JavaPlugin
         rmsg.post();
     }
 
-    /**
-     * Set's AllowPlayers' minecraft.net status to online or offline
-     *
-     * @param online  TRUE to set minecraft.net as being online, FALSE
-     *                to set minecraft.net as being offline
-     **/
     public void setOnline(boolean online)
     {
         String msg = null;
@@ -250,12 +229,6 @@ public class AllowPlayers extends JavaPlugin
         this.online = online;
     }
 
-    /**
-     * Set the server's online mode state. Online mode determines if
-     * a user is validly logged in with a player name.
-     *
-     * @param mode  TRUE to enable online, FALSE to disable
-     **/
     public void setOnlineMode(boolean mode)
     {
         Object o;
@@ -283,14 +256,6 @@ public class AllowPlayers extends JavaPlugin
         }
     }
 
-    /**
-     * Compare a player's IP to the locally stored address
-     *
-     * @param player  A Player
-     * @param ip      A String containing the player's IP
-     *
-     * @return  TRUE if the player's address matched, otherwise FALSE
-     **/
     public boolean checkPlayerIP(Player player, String ip)
     {
         String la;
