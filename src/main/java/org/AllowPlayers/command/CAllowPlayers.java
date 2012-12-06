@@ -39,7 +39,7 @@ public class CAllowPlayers implements CommandExecutor
     {
         String c;
 
-        if (!ap.hasPermission(sender, "allowplayers.command.ap"))
+        if (!ap.hasPermissionM(sender, "allowplayers.command.ap"))
             return true;
 
         if (args.length < 1) {
@@ -65,7 +65,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void check(CommandSender sender)
     {
-        if (!ap.hasPermission(sender, "allowplayers.command.check"))
+        if (!ap.hasPermissionM(sender, "allowplayers.command.check"))
             return;
 
         ap.watcher.reset();
@@ -74,7 +74,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void disable(CommandSender sender)
     {
-        if (!ap.hasPermission(sender, "allowplayers.command.toggle"))
+        if (!ap.hasPermissionM(sender, "allowplayers.command.toggle"))
             return;
 
         ap.enabled = false;
@@ -86,7 +86,7 @@ public class CAllowPlayers implements CommandExecutor
 
     public void enable(CommandSender sender)
     {
-        if (!ap.hasPermission(sender, "allowplayers.command.toggle"))
+        if (!ap.hasPermissionM(sender, "allowplayers.command.toggle"))
             return;
 
         ap.enabled = true;
@@ -122,7 +122,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void reload(CommandSender sender)
     {
-        if (!ap.hasPermission(sender, "allowplayers.command.reload"))
+        if (!ap.hasPermissionM(sender, "allowplayers.command.reload"))
             return;
 
         ap.reload();

@@ -181,15 +181,12 @@ public class AllowPlayers extends JavaPlugin
      *
      * @return TRUE if the player has permission, otherwise FALSE
      **/
-    public boolean hasPermission(CommandSender sender, String perm)
+    public boolean hasPermissionM(CommandSender sender, String perm)
     {
-        if (!(sender instanceof Player))
+        if (sender.hasPermission(perm))
             return true;
 
-        if (((Player) sender).hasPermission(perm))
-            return true;
-
-        Message.severe(sender, "You don't have permission to do that!");
+        Message.severe(sender, "You don't have permission for that");
         return false;
     }
 
