@@ -19,6 +19,7 @@ package org.AllowPlayers;
 
 import java.io.File;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Configuration extends YamlConfiguration
@@ -46,18 +47,22 @@ public class Configuration extends YamlConfiguration
 
     public void load()
     {
+        ConfigurationSection cs;
+
         try {
             super.load(file);
         } catch (Exception e) {
             Log.warning("Unable to load: %s", file.toString());
         }
 
-        timeout     = getInt("watcher.timeout",           timeout);
-        connTimeout = getInt("watcher.connectionTimeout", connTimeout);
+        cs          = getConfigurationSection("watcher");
+        timeout     = cs.getInt("timeout",           timeout);
+        connTimeout = cs.getInt("connectionTimeout", connTimeout);
 
-        ircEnabled  = getBoolean("irc.enabled", ircEnabled);
-        ircColored  = getBoolean("irc.colored", ircEnabled);
-        ircTag      = getString("irc.tag",      ircTag);
+        cs          = getConfigurationSection("irc");
+        ircEnabled  = cs.getBoolean("enabled", ircEnabled);
+        ircColored  = cs.getBoolean("colored", ircEnabled);
+        ircTag      = cs.getString("tag",      ircTag);
 
         if (!file.exists())
             save();
@@ -65,17 +70,33 @@ public class Configuration extends YamlConfiguration
 
     public void save()
     {
-        set("watcher.timeout",           timeout);
-        set("watcher.connectionTimeout", connTimeout);
+        ConfigurationSection cs;
 
-        set("irc.enabled", ircEnabled);
-        set("irc.colored", ircEnabled);
-        set("irc.tag",     ircTag);
+        cs = getConfigurationSection("watcher");
+        cs.set("timeout",           timeout);
+        cs.set("connectionTimeout", connTimeout);
+
+        cs = getConfigurationSection("irc");
+        cs.set("enabled", ircEnabled);
+        cs.set("colored", ircEnabled);
+        cs.set("tag",     ircTag);
 
         try {
             super.save(file);
         } catch (Exception e) {
             Log.warning("Unable to save: %s", file.toString());
         }
+    }
+
+    public ConfigurationSection getConfigurationSection(String path)
+    {
+        ConfigurationSection ret;
+
+        ret = super.getConfigurationSection(path);
+
+        if (ret == null)
+            ret = createSection(path);
+
+        return ret;
     }
 }
