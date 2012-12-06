@@ -39,23 +39,23 @@ public class CAllowPlayers implements CommandExecutor
     {
         String c;
 
-        if(!ap.hasPermission(sender, "allowplayers.command.ap"))
+        if (!ap.hasPermission(sender, "allowplayers.command.ap"))
             return true;
 
-        if(args.length < 1) {
+        if (args.length < 1) {
             info(sender);
             return true;
         }
 
         c = args[0].toLowerCase();
 
-        if(c.matches("c|check"))
+        if (c.matches("c|check"))
             check(sender);
-        else if(c.matches("e|enable|on|online"))
+        else if (c.matches("e|enable|on|online"))
             enable(sender);
-        else if(c.matches("d|disable|off|offline"))
+        else if (c.matches("d|disable|off|offline"))
             disable(sender);
-        else if(c.matches("r|rel|reload"))
+        else if (c.matches("r|rel|reload"))
             reload(sender);
         else
             Message.info(sender, command.getUsage());
@@ -65,7 +65,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void check(CommandSender sender)
     {
-        if(!ap.hasPermission(sender, "allowplayers.command.check"))
+        if (!ap.hasPermission(sender, "allowplayers.command.check"))
             return;
 
         ap.watcher.reset();
@@ -74,7 +74,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void disable(CommandSender sender)
     {
-        if(!ap.hasPermission(sender, "allowplayers.command.toggle"))
+        if (!ap.hasPermission(sender, "allowplayers.command.toggle"))
             return;
 
         ap.enabled = false;
@@ -86,7 +86,7 @@ public class CAllowPlayers implements CommandExecutor
 
     public void enable(CommandSender sender)
     {
-        if(!ap.hasPermission(sender, "allowplayers.command.toggle"))
+        if (!ap.hasPermission(sender, "allowplayers.command.toggle"))
             return;
 
         ap.enabled = true;
@@ -104,7 +104,7 @@ public class CAllowPlayers implements CommandExecutor
 
         msg = "AllowPlayers Status:  ";
 
-        if(ap.enabled)
+        if (ap.enabled)
             msg += ChatColor.GREEN + "Enabled";
         else
             msg += ChatColor.RED   + "Disabled";
@@ -112,7 +112,7 @@ public class CAllowPlayers implements CommandExecutor
         Message.info(sender, msg);
         msg = "Minecraft.net Status: ";
 
-        if(ap.online)
+        if (ap.online)
             msg += ChatColor.GREEN + "Online";
         else
             msg += ChatColor.RED   + "Offline";
@@ -122,7 +122,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void reload(CommandSender sender)
     {
-        if(!ap.hasPermission(sender, "allowplayers.command.reload"))
+        if (!ap.hasPermission(sender, "allowplayers.command.reload"))
             return;
 
         ap.reload();

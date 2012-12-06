@@ -50,14 +50,14 @@ public class EventListener implements Listener
         String s;
         String ip;
 
-        if(!ap.enabled || ap.online)
+        if (!ap.enabled || ap.online)
             return;
 
         p  = e.getPlayer();
         s  = p.getName();
         ip = e.getKickMessage();
 
-        if(ap.checkPlayerIP(p, ip)) {
+        if (ap.checkPlayerIP(p, ip)) {
             Log.info("%s [%s] granted access to join", s, ip);
             return;
         }

@@ -82,7 +82,7 @@ public class AllowPlayers extends JavaPlugin
 
     public void onEnable()
     {
-        if(!findPlugins()) {
+        if (!findPlugins()) {
             Log.severe("Unable to find: AdminCmd, Essentials, or Essentials-3");
             setEnabled(false);
             return;
@@ -93,7 +93,7 @@ public class AllowPlayers extends JavaPlugin
 
         config.load();
 
-        if(config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
+        if (config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
             config.ircEnabled = false;
 
         events.register();
@@ -102,23 +102,23 @@ public class AllowPlayers extends JavaPlugin
 
     public void onDisable()
     {
-        if(config.ircEnabled)
+        if (config.ircEnabled)
             craftirc.unregisterEndPoint(config.ircTag);
 
         try {
             watcher.quit();
             watcher.join();
-        } catch(Exception e) {}
+        } catch (Exception e) {}
     }
 
     public void reload()
     {
-        if(config.ircEnabled)
+        if (config.ircEnabled)
             craftirc.unregisterEndPoint(config.ircTag);
 
         config.load();
 
-        if(config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
+        if (config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
             config.ircEnabled = false;
 
         watcher.reset();
@@ -132,28 +132,28 @@ public class AllowPlayers extends JavaPlugin
         pm = getServer().getPluginManager();
         p  = pm.getPlugin("CraftIRC");
 
-        if((p != null) && p.isEnabled()) {
+        if ((p != null) && p.isEnabled()) {
             craftirc = (CraftIRC) p;
             apPoint  = new APPoint();
         }
 
         p = pm.getPlugin("AdminCmd");
 
-        if((p != null) && p.isEnabled()) {
+        if ((p != null) && p.isEnabled()) {
             admincmd = (AdminCmd) p;
             return true;
         }
 
         p = pm.getPlugin("Essentials");
 
-        if((p != null) && p.isEnabled()) {
+        if ((p != null) && p.isEnabled()) {
             essentials = (Essentials) p;
             return true;
         }
 
         p = pm.getPlugin("Essentials-3");
 
-        if((p != null) && p.isEnabled()) {
+        if ((p != null) && p.isEnabled()) {
             essentials3 = ((net.ess3.bukkit.BukkitPlugin) p).getEssentials();
             return true;
         }
@@ -163,10 +163,10 @@ public class AllowPlayers extends JavaPlugin
 
     private boolean registerEndPoint(String tag, Object ep)
     {
-        if(craftirc == null)
+        if (craftirc == null)
             return false;
 
-        if(craftirc.registerEndPoint(tag, (EndPoint) ep))
+        if (craftirc.registerEndPoint(tag, (EndPoint) ep))
             return true;
 
         Log.severe("Unable to register CraftIRC tag: %s", tag);
@@ -183,10 +183,10 @@ public class AllowPlayers extends JavaPlugin
      **/
     public boolean hasPermission(CommandSender sender, String perm)
     {
-        if(!(sender instanceof Player))
+        if (!(sender instanceof Player))
             return true;
 
-        if(((Player) sender).hasPermission(perm))
+        if (((Player) sender).hasPermission(perm))
             return true;
 
         Message.severe(sender, "You don't have permission to do that!");
@@ -206,26 +206,26 @@ public class AllowPlayers extends JavaPlugin
 
         msg = String.format(format, args);
 
-        for(Player p : getServer().getOnlinePlayers()) {
-            if(p.hasPermission(perm))
+        for (Player p : getServer().getOnlinePlayers()) {
+            if (p.hasPermission(perm))
                 Message.info(p, msg);
         }
 
         Log.info(format, args);
 
-        if(!config.ircEnabled)
+        if (!config.ircEnabled)
             return;
 
         RelayedMessage rmsg = craftirc.newMsg(apPoint, null, "chat");
 
-        if(!config.ircColored)
+        if (!config.ircColored)
             msg = ChatColor.stripColor(msg);
 
         rmsg.setField("realSender", pluginName);
         rmsg.setField("sender",     pluginName);
         rmsg.setField("message",    msg);
 
-        if(rmsg.post())
+        if (rmsg.post())
             return;
 
         registerEndPoint(config.ircTag, apPoint);
@@ -242,15 +242,15 @@ public class AllowPlayers extends JavaPlugin
     {
         String msg = null;
 
-        if(!this.online && online) {
+        if (!this.online && online) {
             msg = ChatColor.GREEN + "Minecraft.net has come back " +
                                     "online.";
-        } else if(this.online && !online) {
+        } else if (this.online && !online) {
             msg = ChatColor.RED   + "Minecraft.net has gone " +
                                     "offline. Do not logout!";
         }
 
-        if(msg != null)
+        if (msg != null)
             broadcast("allowplayers.message.notify", msg);
 
         this.online = online;
@@ -283,7 +283,7 @@ public class AllowPlayers extends JavaPlugin
 
             m = c.getDeclaredMethod("setOnlineMode", boolean.class);
             m.invoke(o, mode);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return;
         }
@@ -301,22 +301,22 @@ public class AllowPlayers extends JavaPlugin
     {
         String la;
 
-        if(ip.length() < 1)
+        if (ip.length() < 1)
             return false;
 
-        if(admincmd != null) {
+        if (admincmd != null) {
             ACPlayer p;
 
             p  = ACPlayer.getPlayer(player);
             la = p.getInformation("last-ip").getString();
 
-            if(la != null)
+            if (la != null)
                 la = la.replaceAll("/", "");
 
             return ip.equals(la);
         }
 
-        if(essentials != null) {
+        if (essentials != null) {
             User u;
 
             u  = essentials.getUser(player);
@@ -325,7 +325,7 @@ public class AllowPlayers extends JavaPlugin
             return ip.equals(la);
         }
 
-        if(essentials3 != null) {
+        if (essentials3 != null) {
             IUser iu;
 
             iu = essentials3.getUserMap().getUser(player);

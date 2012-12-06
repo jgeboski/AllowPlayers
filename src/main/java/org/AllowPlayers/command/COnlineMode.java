@@ -38,23 +38,23 @@ public class COnlineMode implements CommandExecutor
     {
         String c;
 
-        if(!ap.hasPermission(sender, "allowplayers.command.onlinemode"))
+        if (!ap.hasPermission(sender, "allowplayers.command.onlinemode"))
             return true;
 
-        if(args.length < 1) {
+        if (args.length < 1) {
             info(sender);
             return true;
         }
 
         c = args[0].toLowerCase();
 
-        if(c.matches("e|enable|on|online")) {
+        if (c.matches("e|enable|on|online")) {
             ap.setOnlineMode(true);
             info(sender);
-        } else if(c.matches("d|disable|off|offline")) {
+        } else if (c.matches("d|disable|off|offline")) {
             ap.setOnlineMode(false);
             info(sender);
-        } else if(c.matches("s|stat|status")) {
+        } else if (c.matches("s|stat|status")) {
             info(sender);
         } else {
             Message.info(sender, command.getUsage());
@@ -69,7 +69,7 @@ public class COnlineMode implements CommandExecutor
 
         msg = "Online Mode: ";
 
-        if(ap.getServer().getOnlineMode())
+        if (ap.getServer().getOnlineMode())
             msg += ChatColor.GREEN + "Enabled";
         else
             msg += ChatColor.RED   + "Disabled";

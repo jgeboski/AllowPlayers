@@ -38,16 +38,16 @@ public class Watcher extends Thread
 
         try {
             url = new URL("http://session.minecraft.net/game/checkserver.jsp");
-        } catch(MalformedURLException e) {}
+        } catch (MalformedURLException e) { }
     }
 
     public void run()
     {
         URLConnection urlc;
 
-        while(!quit)
+        while (!quit)
         {
-            if(ap.enabled) {
+            if (ap.enabled) {
                 try {
                     urlc = url.openConnection();
 
@@ -58,17 +58,17 @@ public class Watcher extends Thread
 
                     ap.setOnline(true);
                     ap.setOnlineMode(true);
-                } catch(IOException e) {
+                } catch (IOException e) {
                     ap.setOnline(false);
                     ap.setOnlineMode(false);
                 }
             }
 
             try {
-                synchronized(timeout) {
+                synchronized (timeout) {
                     timeout.wait(ap.config.timeout);
                 }
-            } catch(InterruptedException e) {}
+            } catch (InterruptedException e) {}
         }
 
         quit = false;
@@ -76,7 +76,7 @@ public class Watcher extends Thread
 
     public void reset()
     {
-        synchronized(timeout) {
+        synchronized (timeout) {
             timeout.notify();
         }
     }
