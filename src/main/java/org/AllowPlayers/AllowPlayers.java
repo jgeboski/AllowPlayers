@@ -186,7 +186,7 @@ public class AllowPlayers extends JavaPlugin
         if (sender.hasPermission(perm))
             return true;
 
-        Message.severe(sender, "You don't have permission for that");
+        Message.severe(sender, "You don't have permission for that.");
         return false;
     }
 
@@ -239,13 +239,10 @@ public class AllowPlayers extends JavaPlugin
     {
         String msg = null;
 
-        if (!this.online && online) {
-            msg = ChatColor.GREEN + "Minecraft.net has come back " +
-                                    "online.";
-        } else if (this.online && !online) {
-            msg = ChatColor.RED   + "Minecraft.net has gone " +
-                                    "offline. Do not logout!";
-        }
+        if (!this.online && online)
+            msg = ChatColor.GREEN + "Minecraft.net has come back online.";
+        else if (this.online && !online)
+            msg = ChatColor.RED   + "Minecraft.net has gone offline.";
 
         if (msg != null)
             broadcast("allowplayers.message.notify", msg);

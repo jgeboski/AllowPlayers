@@ -64,7 +64,7 @@ public class EventListener implements Listener
 
         e.disallow(Result.KICK_OTHER,
                    "Minecraft.net is offline, and you are not " +
-                   "recognized by our system. Try back later.");
+                   "recognized. Try back later.");
 
         Log.info("%s [%s] denied access to join", s, ip);
     }
