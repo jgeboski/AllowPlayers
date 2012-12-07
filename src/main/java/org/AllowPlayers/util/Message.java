@@ -15,11 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers;
+package org.AllowPlayers.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import org.AllowPlayers.AllowPlayers;
 
 public class Message
 {

@@ -43,6 +43,8 @@ import net.ess3.api.IUser;
 
 import org.AllowPlayers.command.CAllowPlayers;
 import org.AllowPlayers.command.COnlineMode;
+import org.AllowPlayers.util.Log;
+import org.AllowPlayers.util.Message;
 
 public class AllowPlayers extends JavaPlugin
 {

@@ -22,6 +22,8 @@ import java.io.File;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import org.AllowPlayers.util.Log;
+
 public class Configuration extends YamlConfiguration
 {
     private File file;

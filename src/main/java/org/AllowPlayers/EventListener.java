@@ -25,6 +25,8 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.PluginManager;
 
+import org.AllowPlayers.util.Log;
+
 public class EventListener implements Listener
 {
     public AllowPlayers ap;

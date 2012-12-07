@@ -23,7 +23,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import org.AllowPlayers.AllowPlayers;
-import org.AllowPlayers.Message;
+import org.AllowPlayers.util.Message;
 
 public class COnlineMode implements CommandExecutor
 {
