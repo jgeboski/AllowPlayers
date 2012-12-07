@@ -56,34 +56,3 @@ permissions:
   allowplayers.message.notify:
     description: View Minecraft.net status messages
     default: op
-
-  # For compatibility (these are deprecated)
-  allowplayers.ap:
-    description: 'Deprecated, use: allowplayers.command.ap'
-    default: op
-    children:
-      allowplayers.command.ap: true
-
-  allowplayers.ap.check:
-    description: 'Deprecated, use: allowplayers.command.check'
-    default: op
-    children:
-      allowplayers.command.check: true
-
-  allowplayers.ap.reload:
-    description: 'Deprecated, use: allowplayers.command.reload'
-    default: op
-    children:
-      allowplayers.command.reload: true
-
-  allowplayers.onlinemode:
-    description: 'Deprecated, use: allowplayers.command.onlinemode'
-    default: op
-    children:
-      allowplayers.command.onlinemode: true
-
-  allowplayers.msg.notify:
-    description: 'Deprecated, use: allowplayers.message.notify'
-    default: op
-    children:
-      allowplayers.message.notify: true
