@@ -25,6 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.AllowPlayers.AllowPlayers;
 import org.AllowPlayers.util.IPUtils;
 import org.AllowPlayers.util.Message;
+import org.AllowPlayers.storage.StorageException;
 
 public class CAllowPlayers implements CommandExecutor
 {
@@ -105,6 +106,9 @@ public class CAllowPlayers implements CommandExecutor
         Message.info(sender, "%s%s", ChatColor.GRAY,
                      ap.getDescription().getFullName());
 
+        Message.info(sender, "Storage Plugin:       %s",
+                     ap.storage.getType().getName());
+
         msg = "AllowPlayers Status:  ";
 
         if (ap.enabled)
@@ -148,7 +152,11 @@ public class CAllowPlayers implements CommandExecutor
             return;
         }
 
-        ap.setPlayerIP(args[1], args[2]);
-        Message.info(sender, "Set IP address to %s for %s", args[2], args[1]);
+        try {
+            ap.storage.setIP(args[1], args[2]);
+            Message.info(sender, "Set IP to %s for %s", args[2], args[1]);
+        } catch (StorageException e) {
+            Message.severe(sender, e.getMessage());
+        }
     }
 }

@@ -28,78 +28,86 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import be.Balor.bukkit.AdminCmd.AdminCmd;
-import be.Balor.Player.ACPlayer;
-
-import com.earth2me.essentials.Essentials;
-import com.earth2me.essentials.User;
-
 import com.ensifera.animosity.craftirc.CraftIRC;
 import com.ensifera.animosity.craftirc.EndPoint;
 import com.ensifera.animosity.craftirc.RelayedMessage;
-
-import net.ess3.api.IEssentials;
-import net.ess3.api.IUser;
 
 import org.AllowPlayers.command.CAllowPlayers;
 import org.AllowPlayers.command.COnlineMode;
 import org.AllowPlayers.util.Log;
 import org.AllowPlayers.util.Message;
+import org.AllowPlayers.storage.Storage;
+import org.AllowPlayers.storage.StorageException;
+import org.AllowPlayers.storage.StorageManager;
 
 public class AllowPlayers extends JavaPlugin
 {
     public static final String pluginName = "AllowPlayers";
 
-    public Configuration config;
-    public Watcher watcher;
+    public Configuration  config;
+    public Watcher        watcher;
+    public StorageManager storage;
+
+    private EventListener events;
 
     public boolean enabled;
     public boolean online;
 
-    private EventListener events;
-
     public CraftIRC craftirc;
-    public APPoint apPoint;
-
-    public AdminCmd admincmd;
-    public Essentials essentials;
-    public IEssentials essentials3;
+    public APPoint  apPoint;
 
     public void onLoad()
     {
-        config  = new Configuration(new File(getDataFolder(), "config.yml"));
-        events  = new EventListener(this);
-        watcher = new Watcher(this);
+        config   = new Configuration(new File(getDataFolder(), "config.yml"));
+        events   = new EventListener(this);
+        watcher  = new Watcher(this);
+        storage  = null;
 
-        enabled = true;
-        online  = true;
+        enabled  = true;
+        online   = true;
 
-        craftirc    = null;
-        apPoint     = null;
-
-        admincmd    = null;
-        essentials  = null;
-        essentials3 = null;
+        craftirc = null;
+        apPoint  = null;
     }
 
     public void onEnable()
     {
-        if (!findPlugins()) {
-            Log.severe("Unable to find: AdminCmd, Essentials, or Essentials-3");
+        PluginManager pm;
+        Plugin p;
+
+        pm = getServer().getPluginManager();
+        config.load();
+
+        try {
+            if (config.storageType.equalsIgnoreCase("auto"))
+                storage = StorageManager.create(pm);
+            else
+                storage = StorageManager.create(pm, config.storageType);
+        } catch (StorageException e) {
+            Log.severe(e.getMessage());
             setEnabled(false);
             return;
         }
 
-        getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
-        getCommand("onlinemode").setExecutor(new COnlineMode(this));
+        Log.info("Storage plugin: %s", storage.getType().getName());
 
-        config.load();
+        if (config.ircEnabled) {
+            p  = pm.getPlugin("CraftIRC");
 
-        if (config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
-            config.ircEnabled = false;
+            if ((p != null) && p.isEnabled()) {
+                craftirc = (CraftIRC) p;
+                apPoint  = new APPoint();
+            }
+
+            if (!registerEndPoint(config.ircTag, apPoint))
+                config.ircEnabled = false;
+        }
 
         events.register();
         watcher.start();
+
+        getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
+        getCommand("onlinemode").setExecutor(new COnlineMode(this));
     }
 
     public void onDisable()
@@ -124,43 +132,6 @@ public class AllowPlayers extends JavaPlugin
             config.ircEnabled = false;
 
         watcher.reset();
-    }
-
-    private boolean findPlugins()
-    {
-        PluginManager pm;
-        Plugin p;
-
-        pm = getServer().getPluginManager();
-        p  = pm.getPlugin("CraftIRC");
-
-        if ((p != null) && p.isEnabled()) {
-            craftirc = (CraftIRC) p;
-            apPoint  = new APPoint();
-        }
-
-        p = pm.getPlugin("AdminCmd");
-
-        if ((p != null) && p.isEnabled()) {
-            admincmd = (AdminCmd) p;
-            return true;
-        }
-
-        p = pm.getPlugin("Essentials");
-
-        if ((p != null) && p.isEnabled()) {
-            essentials = (Essentials) p;
-            return true;
-        }
-
-        p = pm.getPlugin("Essentials-3");
-
-        if ((p != null) && p.isEnabled()) {
-            essentials3 = ((net.ess3.bukkit.BukkitPlugin) p).getEssentials();
-            return true;
-        }
-
-        return false;
     }
 
     private boolean registerEndPoint(String tag, Object ep)
@@ -255,91 +226,6 @@ public class AllowPlayers extends JavaPlugin
         } catch (Exception e) {
             e.printStackTrace();
             return;
-        }
-    }
-
-    public boolean checkPlayerIP(Player player, String ip)
-    {
-        String la;
-
-        if (ip.length() < 1)
-            return false;
-
-        if (admincmd != null) {
-            ACPlayer p;
-
-            p  = ACPlayer.getPlayer(player);
-            la = p.getInformation("last-ip").getString();
-
-            if (la != null)
-                la = la.replaceAll("/", "");
-
-            return ip.equals(la);
-        }
-
-        if (essentials != null) {
-            User u;
-
-            u  = essentials.getUser(player);
-            la = u.getLastLoginAddress();
-
-            return ip.equals(la);
-        }
-
-        if (essentials3 != null) {
-            IUser iu;
-
-            iu = essentials3.getUserMap().getUser(player);
-            la = iu.getData().getIpAddress();
-
-            return ip.equals(la);
-        }
-
-        return false;
-    }
-
-    public void setPlayerIP(String player, String ip)
-    {
-        if (ip.length() < 1)
-            return;
-
-        if (admincmd != null) {
-            ACPlayer p;
-
-            p = ACPlayer.getPlayer(player);
-            p.setInformation("last-ip", ip);
-        }
-
-        if (essentials != null) {
-            Class  c;
-            Method m;
-            User   u;
-
-            u = essentials.getUser(player);
-            c = u.getClass();
-
-            try {
-                /* User -> UserData */
-                c = c.getSuperclass();
-                m = c.getDeclaredMethod("_setLastLoginAddress", String.class);
-
-                m.setAccessible(true);
-                m.invoke(u, ip);
-                m.setAccessible(false);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
-
-            u.save();
-        }
-
-        if (essentials3 != null) {
-            IUser iu;
-
-            iu = essentials3.getUserMap().getUser(player);
-            iu.getData().setIpAddress(ip);
-            iu.queueSave();
         }
     }
 }

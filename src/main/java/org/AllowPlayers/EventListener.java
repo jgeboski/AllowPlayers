@@ -26,6 +26,7 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.PluginManager;
 
 import org.AllowPlayers.util.Log;
+import org.AllowPlayers.storage.StorageException;
 
 public class EventListener implements Listener
 {
@@ -46,25 +47,29 @@ public class EventListener implements Listener
 
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerLogin(PlayerLoginEvent e)
+    public void onPlayerLogin(PlayerLoginEvent event)
     {
-        Player p;
-        String s;
-        String ip;
+        Player  p;
+        String  s;
+        String  ip;
 
         if (!ap.enabled || ap.online)
             return;
 
-        p  = e.getPlayer();
+        p  = event.getPlayer();
         s  = p.getName();
-        ip = e.getKickMessage();
+        ip = event.getKickMessage();
 
-        if (ap.checkPlayerIP(p, ip)) {
-            Log.info("%s [%s] granted access to join", s, ip);
-            return;
+        try {
+            if (ap.storage.checkIP(p, ip)) {
+                Log.info("%s [%s] granted access to join", s, ip);
+                return;
+            }
+        } catch (StorageException e) {
+            Log.severe(e.getMessage());
         }
 
-        e.disallow(Result.KICK_OTHER,
+        event.disallow(Result.KICK_OTHER,
                    "Minecraft.net is offline, and you are not " +
                    "recognized. Try back later.");
 

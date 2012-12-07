@@ -28,6 +28,8 @@ public class Configuration extends YamlConfiguration
 {
     private File file;
 
+    public String storageType;
+
     public int timeout;
     public int connTimeout;
 
@@ -38,6 +40,8 @@ public class Configuration extends YamlConfiguration
     public Configuration(File file)
     {
         this.file = file;
+
+        storageType = "auto";
 
         timeout     = 60000;
         connTimeout = 10000;
@@ -57,6 +61,9 @@ public class Configuration extends YamlConfiguration
             Log.warning("Unable to load: %s", file.toString());
         }
 
+        cs          = getConfigurationSection("storage");
+        storageType = cs.getString("type", storageType);
+
         cs          = getConfigurationSection("watcher");
         timeout     = cs.getInt("timeout",           timeout);
         connTimeout = cs.getInt("connectionTimeout", connTimeout);
@@ -73,6 +80,9 @@ public class Configuration extends YamlConfiguration
     public void save()
     {
         ConfigurationSection cs;
+
+        cs = getConfigurationSection("storage");
+        cs.set("type", storageType);
 
         cs = getConfigurationSection("watcher");
         cs.set("timeout",           timeout);
