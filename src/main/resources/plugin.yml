@@ -9,7 +9,9 @@ commands:
   allowplayers:
     description: Manage AllowPlayers
     aliases: ['ap']
-    usage: /<command> [check|enable|disable|reload]
+    usage: |
+      /<command> [check|enable|disable|reload]
+      /<command> set <player> <IP>
 
   onlinemode:
     description: Enable/Disable online mode
@@ -35,6 +37,12 @@ permissions:
 
   allowplayers.command.onlinemode:
     description: Set the server's online mode
+    default: op
+    children:
+      allowplayers.command.ap: true
+
+  allowplayers.command.set:
+    description: Set a player's IP
     default: op
     children:
       allowplayers.command.ap: true

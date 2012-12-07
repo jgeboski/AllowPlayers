@@ -295,4 +295,49 @@ public class AllowPlayers extends JavaPlugin
 
         return false;
     }
+
+    public void setPlayerIP(String player, String ip)
+    {
+        if (ip.length() < 1)
+            return;
+
+        if (admincmd != null) {
+            ACPlayer p;
+
+            p = ACPlayer.getPlayer(player);
+            p.setInformation("last-ip", ip);
+        }
+
+        if (essentials != null) {
+            Class  c;
+            Method m;
+            User   u;
+
+            u = essentials.getUser(player);
+            c = u.getClass();
+
+            try {
+                /* User -> UserData */
+                c = c.getSuperclass();
+                m = c.getDeclaredMethod("_setLastLoginAddress", String.class);
+
+                m.setAccessible(true);
+                m.invoke(u, ip);
+                m.setAccessible(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+
+            u.save();
+        }
+
+        if (essentials3 != null) {
+            IUser iu;
+
+            iu = essentials3.getUserMap().getUser(player);
+            iu.getData().setIpAddress(ip);
+            iu.queueSave();
+        }
+    }
 }

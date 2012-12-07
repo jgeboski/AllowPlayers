@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 
 import org.AllowPlayers.AllowPlayers;
 import org.AllowPlayers.Message;
+import org.AllowPlayers.util.IPUtils;
 
 public class CAllowPlayers implements CommandExecutor
 {
@@ -57,6 +58,8 @@ public class CAllowPlayers implements CommandExecutor
             disable(sender);
         else if (c.matches("r|rel|reload"))
             reload(sender);
+        else if (c.matches("s|set"))
+            set(sender, args);
         else
             Message.info(sender, command.getUsage());
 
@@ -128,5 +131,24 @@ public class CAllowPlayers implements CommandExecutor
         ap.reload();
 
         Message.info(sender, "Configuration reloaded.");
+    }
+
+    private void set(CommandSender sender, String[] args)
+    {
+        if (!ap.hasPermissionM(sender, "allowplayers.command.set"))
+            return;
+
+        if (args.length < 3) {
+            Message.severe(sender, "Specify a username and IP address.");
+            return;
+        }
+
+        if (!IPUtils.isAddress(args[2])) {
+            Message.severe(sender, "Specify a valid IP address.");
+            return;
+        }
+
+        ap.setPlayerIP(args[1], args[2]);
+        Message.info(sender, "Set IP address to %s for %s", args[2], args[1]);
     }
 }

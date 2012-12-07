@@ -10,6 +10,7 @@ Commands:
   - allowplayers - Manage AllowPlayers
     - Aliases: ap
     - Usage: /<command> [check|enable|disable|reload]
+             /<command> set <player> <IP>
   - onlinemode - Sets the server's online mode state
     - Aliases: om
     - Usage: /<command> [status|enable|disable]
