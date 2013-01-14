@@ -197,7 +197,7 @@ public class AllowPlayers extends JavaPlugin
             msg = ChatColor.RED   + "Minecraft.net has gone offline.";
 
         if (msg != null)
-            broadcast("allowplayers.message.notify", msg);
+            broadcast("allowplayers.notify", msg);
 
         this.online = online;
     }
