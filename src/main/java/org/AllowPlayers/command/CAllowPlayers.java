@@ -25,6 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.AllowPlayers.AllowPlayers;
 import org.AllowPlayers.util.IPUtils;
 import org.AllowPlayers.util.Message;
+import org.AllowPlayers.util.Utils;
 import org.AllowPlayers.storage.StorageException;
 
 public class CAllowPlayers implements CommandExecutor
@@ -41,7 +42,7 @@ public class CAllowPlayers implements CommandExecutor
     {
         String c;
 
-        if (!ap.hasPermissionM(sender, "allowplayers.ap"))
+        if (!Utils.hasPermission(sender, "allowplayers.ap"))
             return true;
 
         if (args.length < 1) {
@@ -69,7 +70,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void check(CommandSender sender)
     {
-        if (!ap.hasPermissionM(sender, "allowplayers.ap.check"))
+        if (!Utils.hasPermission(sender, "allowplayers.ap.check"))
             return;
 
         ap.watcher.reset();
@@ -78,7 +79,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void disable(CommandSender sender)
     {
-        if (!ap.hasPermissionM(sender, "allowplayers.ap.toggle"))
+        if (!Utils.hasPermission(sender, "allowplayers.ap.toggle"))
             return;
 
         ap.enabled = false;
@@ -90,7 +91,7 @@ public class CAllowPlayers implements CommandExecutor
 
     public void enable(CommandSender sender)
     {
-        if (!ap.hasPermissionM(sender, "allowplayers.ap.toggle"))
+        if (!Utils.hasPermission(sender, "allowplayers.ap.toggle"))
             return;
 
         ap.enabled = true;
@@ -129,7 +130,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void reload(CommandSender sender)
     {
-        if (!ap.hasPermissionM(sender, "allowplayers.ap.reload"))
+        if (!Utils.hasPermission(sender, "allowplayers.ap.reload"))
             return;
 
         ap.reload();
@@ -139,7 +140,7 @@ public class CAllowPlayers implements CommandExecutor
 
     private void set(CommandSender sender, String[] args)
     {
-        if (!ap.hasPermissionM(sender, "allowplayers.ap.set"))
+        if (!Utils.hasPermission(sender, "allowplayers.ap.set"))
             return;
 
         if (args.length < 3) {

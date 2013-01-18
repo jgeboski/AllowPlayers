@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 
 import org.AllowPlayers.AllowPlayers;
 import org.AllowPlayers.util.Message;
+import org.AllowPlayers.util.Utils;
 
 public class COnlineMode implements CommandExecutor
 {
@@ -38,7 +39,7 @@ public class COnlineMode implements CommandExecutor
     {
         String c;
 
-        if (!ap.hasPermissionM(sender, "allowplayers.onlinemode"))
+        if (!Utils.hasPermission(sender, "allowplayers.onlinemode"))
             return true;
 
         if (args.length < 1) {
