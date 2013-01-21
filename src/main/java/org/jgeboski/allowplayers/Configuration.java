@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers;
+package org.jgeboski.allowplayers;
 
 import java.io.File;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import org.AllowPlayers.util.Log;
+import org.jgeboski.allowplayers.util.Log;
 
 public class Configuration extends YamlConfiguration
 {

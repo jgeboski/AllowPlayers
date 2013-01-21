@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers;
+package org.jgeboski.allowplayers;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,8 +25,8 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.PluginManager;
 
-import org.AllowPlayers.util.Log;
-import org.AllowPlayers.storage.StorageException;
+import org.jgeboski.allowplayers.util.Log;
+import org.jgeboski.allowplayers.storage.StorageException;
 
 public class EventListener implements Listener
 {

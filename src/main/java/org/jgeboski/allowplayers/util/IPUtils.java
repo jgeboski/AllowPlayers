@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.util;
+package org.jgeboski.allowplayers.util;
 
 import java.net.InetAddress;
 import java.net.Inet4Address;

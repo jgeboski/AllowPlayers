@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.storage;
+package org.jgeboski.allowplayers.storage;
 
 import java.lang.reflect.Constructor;
 
@@ -25,9 +25,9 @@ import be.Balor.bukkit.AdminCmd.AdminCmd;
 import com.earth2me.essentials.Essentials;
 import net.ess3.api.IEssentials;
 
-import org.AllowPlayers.storage.plugin.PAdminCmd;
-import org.AllowPlayers.storage.plugin.PEssentials;
-import org.AllowPlayers.storage.plugin.PEssentials3;
+import org.jgeboski.allowplayers.storage.plugin.PAdminCmd;
+import org.jgeboski.allowplayers.storage.plugin.PEssentials;
+import org.jgeboski.allowplayers.storage.plugin.PEssentials3;
 
 public enum StorageType
 {

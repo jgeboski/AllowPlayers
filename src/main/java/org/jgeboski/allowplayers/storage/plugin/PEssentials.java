@@ -15,19 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.storage.plugin;
+package org.jgeboski.allowplayers.storage.plugin;
+
+import java.lang.reflect.Method;
 
 import org.bukkit.plugin.Plugin;
 
-import be.Balor.bukkit.AdminCmd.AdminCmd;
-import be.Balor.Player.ACPlayer;
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.User;
 
-import org.AllowPlayers.storage.StorageException;
-import org.AllowPlayers.storage.StoragePlugin;
+import org.jgeboski.allowplayers.storage.StorageException;
+import org.jgeboski.allowplayers.storage.StoragePlugin;
 
-public class PAdminCmd extends StoragePlugin<AdminCmd>
+public class PEssentials extends StoragePlugin<Essentials>
 {
-    public PAdminCmd(Plugin plugin)
+    public PEssentials(Plugin plugin)
     {
         super(plugin);
     }
@@ -35,16 +37,11 @@ public class PAdminCmd extends StoragePlugin<AdminCmd>
     public boolean checkIP(String player, String ip)
         throws StorageException
     {
-        String   a;
-        ACPlayer p;
+        String a;
+        User   p;
 
-        p = ACPlayer.getPlayer(player);
-        a = p.getInformation("last-ip").getString();
-
-        if (a == null)
-            return false;
-
-        a = a.replaceAll("/", "");
+        p = plugin.getUser(player);
+        a = p.getLastLoginAddress();
 
         return ip.equals(a);
     }
@@ -52,9 +49,26 @@ public class PAdminCmd extends StoragePlugin<AdminCmd>
     public void setIP(String player, String ip)
         throws StorageException
     {
-        ACPlayer p;
+        Class  c;
+        Method m;
+        User   p;
 
-        p = ACPlayer.getPlayer(player);
-        p.setInformation("last-ip", ip);
+        p = plugin.getUser(player);
+        c = p.getClass();
+
+        try {
+            /* User -> UserData */
+            c = c.getSuperclass();
+            m = c.getDeclaredMethod("_setLastLoginAddress", String.class);
+
+            m.setAccessible(true);
+            m.invoke(p, ip);
+            m.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        p.save();
     }
 }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.storage;
+package org.jgeboski.allowplayers.storage;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

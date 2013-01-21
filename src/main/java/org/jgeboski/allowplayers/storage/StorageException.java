@@ -15,15 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.storage;
+package org.jgeboski.allowplayers.storage;
 
-import org.bukkit.plugin.Plugin;
-
-public interface Storage
+public class StorageException extends Exception
 {
-    public boolean checkIP(String player, String ip)
-        throws StorageException;
+    public StorageException(String format, Object ... args)
+    {
+        super(String.format(format, args));
+    }
 
-    public void setIP(String player, String ip)
-        throws StorageException;
+    public StorageException(Throwable cause)
+    {
+        super(cause);
+    }
 }

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.util;
+package org.jgeboski.allowplayers.util;
 
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 
-import org.AllowPlayers.AllowPlayers;
+import org.jgeboski.allowplayers.AllowPlayers;
 
 public class Log
 {

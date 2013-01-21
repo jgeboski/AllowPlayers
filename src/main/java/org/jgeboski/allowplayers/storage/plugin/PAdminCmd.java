@@ -15,21 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.storage.plugin;
-
-import java.lang.reflect.Method;
+package org.jgeboski.allowplayers.storage.plugin;
 
 import org.bukkit.plugin.Plugin;
 
-import com.earth2me.essentials.Essentials;
-import com.earth2me.essentials.User;
+import be.Balor.bukkit.AdminCmd.AdminCmd;
+import be.Balor.Player.ACPlayer;
 
-import org.AllowPlayers.storage.StorageException;
-import org.AllowPlayers.storage.StoragePlugin;
+import org.jgeboski.allowplayers.storage.StorageException;
+import org.jgeboski.allowplayers.storage.StoragePlugin;
 
-public class PEssentials extends StoragePlugin<Essentials>
+public class PAdminCmd extends StoragePlugin<AdminCmd>
 {
-    public PEssentials(Plugin plugin)
+    public PAdminCmd(Plugin plugin)
     {
         super(plugin);
     }
@@ -37,11 +35,16 @@ public class PEssentials extends StoragePlugin<Essentials>
     public boolean checkIP(String player, String ip)
         throws StorageException
     {
-        String a;
-        User   p;
+        String   a;
+        ACPlayer p;
 
-        p = plugin.getUser(player);
-        a = p.getLastLoginAddress();
+        p = ACPlayer.getPlayer(player);
+        a = p.getInformation("last-ip").getString();
+
+        if (a == null)
+            return false;
+
+        a = a.replaceAll("/", "");
 
         return ip.equals(a);
     }
@@ -49,26 +52,9 @@ public class PEssentials extends StoragePlugin<Essentials>
     public void setIP(String player, String ip)
         throws StorageException
     {
-        Class  c;
-        Method m;
-        User   p;
+        ACPlayer p;
 
-        p = plugin.getUser(player);
-        c = p.getClass();
-
-        try {
-            /* User -> UserData */
-            c = c.getSuperclass();
-            m = c.getDeclaredMethod("_setLastLoginAddress", String.class);
-
-            m.setAccessible(true);
-            m.invoke(p, ip);
-            m.setAccessible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        p.save();
+        p = ACPlayer.getPlayer(player);
+        p.setInformation("last-ip", ip);
     }
 }

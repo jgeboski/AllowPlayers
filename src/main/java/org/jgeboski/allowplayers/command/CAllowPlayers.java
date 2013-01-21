@@ -15,18 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.command;
+package org.jgeboski.allowplayers.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import org.AllowPlayers.AllowPlayers;
-import org.AllowPlayers.util.IPUtils;
-import org.AllowPlayers.util.Message;
-import org.AllowPlayers.util.Utils;
-import org.AllowPlayers.storage.StorageException;
+import org.jgeboski.allowplayers.AllowPlayers;
+import org.jgeboski.allowplayers.util.IPUtils;
+import org.jgeboski.allowplayers.util.Message;
+import org.jgeboski.allowplayers.util.Utils;
+import org.jgeboski.allowplayers.storage.StorageException;
 
 public class CAllowPlayers implements CommandExecutor
 {

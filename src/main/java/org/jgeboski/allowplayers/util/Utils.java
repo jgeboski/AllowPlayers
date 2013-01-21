@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.util;
+package org.jgeboski.allowplayers.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

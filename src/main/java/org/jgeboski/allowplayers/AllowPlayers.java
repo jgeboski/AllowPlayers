@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers;
+package org.jgeboski.allowplayers;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -32,14 +32,14 @@ import com.ensifera.animosity.craftirc.CraftIRC;
 import com.ensifera.animosity.craftirc.EndPoint;
 import com.ensifera.animosity.craftirc.RelayedMessage;
 
-import org.AllowPlayers.command.CAllowPlayers;
-import org.AllowPlayers.command.COnlineMode;
-import org.AllowPlayers.util.Log;
-import org.AllowPlayers.util.Message;
-import org.AllowPlayers.util.Utils;
-import org.AllowPlayers.storage.Storage;
-import org.AllowPlayers.storage.StorageException;
-import org.AllowPlayers.storage.StorageManager;
+import org.jgeboski.allowplayers.command.CAllowPlayers;
+import org.jgeboski.allowplayers.command.COnlineMode;
+import org.jgeboski.allowplayers.util.Log;
+import org.jgeboski.allowplayers.util.Message;
+import org.jgeboski.allowplayers.util.Utils;
+import org.jgeboski.allowplayers.storage.Storage;
+import org.jgeboski.allowplayers.storage.StorageException;
+import org.jgeboski.allowplayers.storage.StorageManager;
 
 public class AllowPlayers extends JavaPlugin
 {

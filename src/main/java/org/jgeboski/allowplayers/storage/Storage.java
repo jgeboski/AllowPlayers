@@ -15,22 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.storage;
+package org.jgeboski.allowplayers.storage;
 
 import org.bukkit.plugin.Plugin;
 
-public abstract class StoragePlugin<T> implements Storage
+public interface Storage
 {
-    public T plugin;
-
-    public StoragePlugin(Plugin plugin)
-    {
-        this.plugin = (T) plugin;
-    }
-
-    public abstract boolean checkIP(String player, String ip)
+    public boolean checkIP(String player, String ip)
         throws StorageException;
 
-    public abstract void setIP(String player, String ip)
+    public void setIP(String player, String ip)
         throws StorageException;
 }

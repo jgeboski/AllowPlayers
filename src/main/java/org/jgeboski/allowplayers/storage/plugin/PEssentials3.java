@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.AllowPlayers.storage.plugin;
+package org.jgeboski.allowplayers.storage.plugin;
 
 import org.bukkit.plugin.Plugin;
 
@@ -23,8 +23,8 @@ import net.ess3.api.IEssentials;
 import net.ess3.api.IUser;
 import net.ess3.bukkit.BukkitPlugin;
 
-import org.AllowPlayers.storage.StorageException;
-import org.AllowPlayers.storage.StoragePlugin;
+import org.jgeboski.allowplayers.storage.StorageException;
+import org.jgeboski.allowplayers.storage.StoragePlugin;
 
 public class PEssentials3 extends StoragePlugin<IEssentials>
 {
