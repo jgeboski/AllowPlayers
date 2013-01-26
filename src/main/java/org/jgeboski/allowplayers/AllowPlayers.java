@@ -36,6 +36,8 @@ import org.jgeboski.allowplayers.command.CAllowPlayers;
 import org.jgeboski.allowplayers.command.COnlineMode;
 import org.jgeboski.allowplayers.util.Log;
 import org.jgeboski.allowplayers.util.Message;
+import org.jgeboski.allowplayers.util.Reflect;
+import org.jgeboski.allowplayers.util.ReflectException;
 import org.jgeboski.allowplayers.util.Utils;
 import org.jgeboski.allowplayers.storage.Storage;
 import org.jgeboski.allowplayers.storage.StorageException;
@@ -195,28 +197,20 @@ public class AllowPlayers extends JavaPlugin
 
     public void setOnlineMode(boolean mode)
     {
+        Object s;
         Object o;
-        Class  c;
-        Method m;
 
-        /* Some hackery to with the CraftBukkit package naming */
-
-        o = getServer();
-        c = o.getClass();
+        s = getServer();
 
         try {
-            m = c.getDeclaredMethod("getServer");
-            o = m.invoke(o);
+            o = Reflect.getField(s, "online");
+            Reflect.setField(o, "value", mode);
 
-            c = o.getClass();
-            /* DedicatedServer -> MinecraftServer */
-            c = c.getSuperclass();
-
-            m = c.getDeclaredMethod("setOnlineMode", boolean.class);
-            m.invoke(o, mode);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
+            o = Reflect.invoke(s, "getServer");
+            Reflect.invoke(o, "setOnlineMode", mode);
+        } catch (ReflectException e) {
+            Log.severe("CraftBukkit's internal symbols have changed!");
+            Log.severe("Please report this as a bug.");
         }
     }
 }
