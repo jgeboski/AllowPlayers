@@ -60,14 +60,14 @@ public enum StorageType
         return name;
     }
 
-    public Storage getStorage(Plugin plugin)
+    public StoragePlugin getStorage(Plugin plugin)
         throws StorageException
     {
         Constructor c;
 
         try {
             c = storage.getConstructor(Plugin.class);
-            return (Storage) c.newInstance(plugin);
+            return (StoragePlugin) c.newInstance(plugin);
         } catch (Exception e) {
             throw new StorageException(e);
         }

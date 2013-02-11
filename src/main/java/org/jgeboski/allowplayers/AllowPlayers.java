@@ -39,7 +39,6 @@ import org.jgeboski.allowplayers.util.Message;
 import org.jgeboski.allowplayers.util.Reflect;
 import org.jgeboski.allowplayers.util.ReflectException;
 import org.jgeboski.allowplayers.util.Utils;
-import org.jgeboski.allowplayers.storage.Storage;
 import org.jgeboski.allowplayers.storage.StorageException;
 import org.jgeboski.allowplayers.storage.StorageManager;
 

@@ -22,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 import net.ess3.api.IEssentials;
 import net.ess3.api.IUser;
 import net.ess3.bukkit.BukkitPlugin;
+import net.ess3.user.UserData;
 
 import org.jgeboski.allowplayers.storage.StorageException;
 import org.jgeboski.allowplayers.storage.StoragePlugin;
@@ -34,16 +35,13 @@ public class PEssentials3 extends StoragePlugin<IEssentials>
         this.plugin = ((BukkitPlugin) plugin).getEssentials();
     }
 
-    public boolean checkIP(String player, String ip)
+    public String getIP(String player)
         throws StorageException
     {
-        String a;
-        IUser  p;
+        IUser p;
 
         p = plugin.getUserMap().getUser(player);
-        a = p.getData().getIpAddress();
-
-        return ip.equals(a);
+        return p.getData().getIpAddress();
     }
 
     public void setIP(String player, String ip)

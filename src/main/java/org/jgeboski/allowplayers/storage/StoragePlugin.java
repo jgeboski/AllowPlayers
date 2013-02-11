@@ -19,7 +19,7 @@ package org.jgeboski.allowplayers.storage;
 
 import org.bukkit.plugin.Plugin;
 
-public abstract class StoragePlugin<T> implements Storage
+public abstract class StoragePlugin<T>
 {
     public T plugin;
 
@@ -28,7 +28,7 @@ public abstract class StoragePlugin<T> implements Storage
         this.plugin = (T) plugin;
     }
 
-    public abstract boolean checkIP(String player, String ip)
+    public abstract String getIP(String player)
         throws StorageException;
 
     public abstract void setIP(String player, String ip)

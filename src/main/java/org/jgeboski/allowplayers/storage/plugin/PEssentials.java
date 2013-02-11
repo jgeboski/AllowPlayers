@@ -17,8 +17,6 @@
 
 package org.jgeboski.allowplayers.storage.plugin;
 
-import java.lang.reflect.Method;
-
 import org.bukkit.plugin.Plugin;
 
 import com.earth2me.essentials.Essentials;
@@ -26,6 +24,8 @@ import com.earth2me.essentials.User;
 
 import org.jgeboski.allowplayers.storage.StorageException;
 import org.jgeboski.allowplayers.storage.StoragePlugin;
+import org.jgeboski.allowplayers.util.Reflect;
+import org.jgeboski.allowplayers.util.ReflectException;
 
 public class PEssentials extends StoragePlugin<Essentials>
 {
@@ -34,41 +34,27 @@ public class PEssentials extends StoragePlugin<Essentials>
         super(plugin);
     }
 
-    public boolean checkIP(String player, String ip)
+    public String getIP(String player)
         throws StorageException
     {
-        String a;
-        User   p;
+        User u;
 
-        p = plugin.getUser(player);
-        a = p.getLastLoginAddress();
-
-        return ip.equals(a);
+        u = plugin.getUser(player);
+        return u.getLastLoginAddress();
     }
 
     public void setIP(String player, String ip)
         throws StorageException
     {
-        Class  c;
-        Method m;
-        User   p;
+        User u;
 
-        p = plugin.getUser(player);
-        c = p.getClass();
+        u = plugin.getUser(player);
 
         try {
-            /* User -> UserData */
-            c = c.getSuperclass();
-            m = c.getDeclaredMethod("_setLastLoginAddress", String.class);
-
-            m.setAccessible(true);
-            m.invoke(p, ip);
-            m.setAccessible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
+            Reflect.invoke(u, "_setLastLoginAddress", ip);
+            u.save();
+        } catch (ReflectException e) {
+            throw new StorageException(e);
         }
-
-        p.save();
     }
 }

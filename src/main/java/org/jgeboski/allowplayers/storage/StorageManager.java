@@ -23,8 +23,8 @@ import org.bukkit.plugin.PluginManager;
 
 public class StorageManager
 {
-    private StorageType type;
-    private Storage     storage;
+    public StorageType   type;
+    public StoragePlugin storage;
 
     protected StorageManager(StorageType type, Plugin plugin)
         throws StorageException
@@ -73,7 +73,10 @@ public class StorageManager
     public boolean checkIP(String player, String ip)
         throws StorageException
     {
-        return storage.checkIP(player, ip);
+        String a;
+
+        a = storage.getIP(player);
+        return ip.equals(a);
     }
 
     public boolean checkIP(Player player, String ip)
@@ -91,6 +94,6 @@ public class StorageManager
     public void setIP(Player player, String ip)
         throws StorageException
     {
-        setIP(player, ip);
+        setIP(player.getName(), ip);
     }
 }

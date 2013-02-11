@@ -32,21 +32,19 @@ public class PAdminCmd extends StoragePlugin<AdminCmd>
         super(plugin);
     }
 
-    public boolean checkIP(String player, String ip)
+    public String getIP(String player)
         throws StorageException
     {
-        String   a;
         ACPlayer p;
+        String   a;
 
         p = ACPlayer.getPlayer(player);
         a = p.getInformation("last-ip").getString();
 
-        if (a == null)
-            return false;
+        if (a != null)
+            a = a.replaceAll("/", "");
 
-        a = a.replaceAll("/", "");
-
-        return ip.equals(a);
+        return a;
     }
 
     public void setIP(String player, String ip)
