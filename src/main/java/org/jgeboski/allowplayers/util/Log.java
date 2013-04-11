@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 James Geboski <jgeboski@gmail.com>
+ * Copyright 2012-2013 James Geboski <jgeboski@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,52 +18,34 @@
 package org.jgeboski.allowplayers.util;
 
 import java.util.logging.Logger;
-
 import org.bukkit.ChatColor;
-
-import org.jgeboski.allowplayers.AllowPlayers;
 
 public class Log
 {
-    protected static final Logger log = Logger.getLogger("Minecraft");
+    public static Logger logger;
+
+    public static void init(Logger logger)
+    {
+        Log.logger = logger;
+    }
+
+    public static void info(String format, Object ... args)
+    {
+        logger.info(format(format, args));
+    }
+
+    public static void warning(String format, Object ... args)
+    {
+        logger.warning(format(format, args));
+    }
+
+    public static void severe(String format, Object ... args)
+    {
+        logger.severe(format(format, args));
+    }
 
     private static String format(String msg, Object ... args)
     {
-        msg = ChatColor.stripColor(String.format(msg, args));
-        msg = String.format("[%s] %s", AllowPlayers.pluginName, msg);
-        return msg;
-    }
-
-    /**
-     * Log an INFO message prefixed with the plugin name
-     *
-     * @param format  A format string
-     * @param args    Arguments corresponding to @param format
-     **/
-    public static void info(String format, Object ... args)
-    {
-        log.info(format(format, args));
-    }
-
-    /**
-     * Log a WARNING message prefixed with the plugin name
-     *
-     * @param format  A format string
-     * @param args    Arguments corresponding to @param format
-     **/
-    public static void warning(String format, Object ... args)
-    {
-        log.warning(format(format, args));
-    }
-
-    /**
-     * Log a SEVERE message prefixed with the plugin name
-     *
-     * @param format  A format string
-     * @param args    Arguments corresponding to @param format
-     **/
-    public static void severe(String format, Object ... args)
-    {
-        log.severe(format(format, args));
+        return ChatColor.stripColor(String.format(msg, args));
     }
 }

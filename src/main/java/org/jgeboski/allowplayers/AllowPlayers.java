@@ -44,8 +44,6 @@ import org.jgeboski.allowplayers.storage.StorageManager;
 
 public class AllowPlayers extends JavaPlugin
 {
-    public static final String pluginName = "AllowPlayers";
-
     public Configuration  config;
     public Watcher        watcher;
     public StorageManager storage;
@@ -76,6 +74,9 @@ public class AllowPlayers extends JavaPlugin
     {
         PluginManager pm;
         Plugin p;
+
+        Log.init(getLogger());
+        Message.init(getDescription().getName());
 
         pm = getServer().getPluginManager();
         config.load();
@@ -151,6 +152,7 @@ public class AllowPlayers extends JavaPlugin
     public void broadcast(String perm, String format, Object ... args)
     {
         String msg;
+        String name;
 
         msg = String.format(format, args);
         Utils.broadcast(perm, msg);
@@ -164,12 +166,13 @@ public class AllowPlayers extends JavaPlugin
          * from being thrown over com.ensifera.animosity.craftirc.EndPoint.
          */
         rmsg = craftirc.newMsg((EndPoint) ((Object) apPoint), null, "chat");
+        name = getDescription().getName();
 
         if (!config.ircColored)
             msg = ChatColor.stripColor(msg);
 
-        rmsg.setField("realSender", pluginName);
-        rmsg.setField("sender",     pluginName);
+        rmsg.setField("realSender", name);
+        rmsg.setField("sender",     name);
         rmsg.setField("message",    msg);
 
         if (rmsg.post())
