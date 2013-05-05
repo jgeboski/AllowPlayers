@@ -40,6 +40,10 @@ public class PEssentials extends StoragePlugin<Essentials>
         User u;
 
         u = plugin.getUser(player);
+
+        if (u == null)
+            throw new StorageException("Failed to obtain User object");
+
         return u.getLastLoginAddress();
     }
 
@@ -50,11 +54,27 @@ public class PEssentials extends StoragePlugin<Essentials>
 
         u = plugin.getUser(player);
 
+        if (u == null)
+            throw new StorageException("Failed to obtain User object");
+
         try {
             Reflect.invoke(u, "_setLastLoginAddress", ip);
             u.save();
         } catch (ReflectException e) {
             throw new StorageException(e);
         }
+    }
+
+    private User getUser(String player)
+        throws StorageException
+    {
+        User u;
+
+        u = plugin.getUserMap().getUser(player);
+
+        if (u == null)
+            throw new StorageException("Failed to obtain User");
+
+        return u;
     }
 }

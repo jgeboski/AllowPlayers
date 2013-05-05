@@ -38,19 +38,32 @@ public class PEssentials3 extends StoragePlugin<IEssentials>
     public String getIP(String player)
         throws StorageException
     {
-        IUser p;
+        IUser u;
 
-        p = plugin.getUserMap().getUser(player);
-        return p.getData().getIpAddress();
+        u = getIUser(player);
+        return u.getData().getIpAddress();
     }
 
     public void setIP(String player, String ip)
         throws StorageException
     {
-        IUser p;
+        IUser u;
 
-        p = plugin.getUserMap().getUser(player);
-        p.getData().setIpAddress(ip);
-        p.queueSave();
+        u = getIUser(player);
+        u.getData().setIpAddress(ip);
+        u.queueSave();
+    }
+
+    private IUser getIUser(String player)
+        throws StorageException
+    {
+        IUser u;
+
+        u = plugin.getUserMap().getUser(player);
+
+        if (u == null)
+            throw new StorageException("Failed to obtain IUser");
+
+        return u;
     }
 }

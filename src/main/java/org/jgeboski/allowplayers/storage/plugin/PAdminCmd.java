@@ -38,7 +38,7 @@ public class PAdminCmd extends StoragePlugin<AdminCmd>
         ACPlayer p;
         String   a;
 
-        p = ACPlayer.getPlayer(player);
+        p = getACPlayer(player);
         a = p.getInformation("last-ip").getString();
 
         if (a != null)
@@ -52,7 +52,20 @@ public class PAdminCmd extends StoragePlugin<AdminCmd>
     {
         ACPlayer p;
 
-        p = ACPlayer.getPlayer(player);
+        p = getACPlayer(player);
         p.setInformation("last-ip", ip);
+    }
+
+    private ACPlayer getACPlayer(String player)
+        throws StorageException
+    {
+        ACPlayer p;
+
+        p = ACPlayer.getPlayer(player);
+
+        if (p == null)
+            throw new StorageException("Failed to obtain ACPlayer");
+
+        return p;
     }
 }
