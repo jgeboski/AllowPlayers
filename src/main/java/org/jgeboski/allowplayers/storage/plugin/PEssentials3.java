@@ -22,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 import net.ess3.api.IEssentials;
 import net.ess3.api.IUser;
 import net.ess3.bukkit.BukkitPlugin;
+import net.ess3.storage.IStorageObjectHolder;
 import net.ess3.user.UserData;
 
 import org.jgeboski.allowplayers.storage.StorageException;
@@ -39,19 +40,25 @@ public class PEssentials3 extends StoragePlugin<IEssentials>
         throws StorageException
     {
         IUser u;
+        IStorageObjectHolder<UserData> s;
 
         u = getIUser(player);
-        return u.getData().getIpAddress();
+        s = (IStorageObjectHolder<UserData>) u;
+
+        return s.getData().getIpAddress();
     }
 
     public void setIP(String player, String ip)
         throws StorageException
     {
         IUser u;
+        IStorageObjectHolder<UserData> s;
 
         u = getIUser(player);
-        u.getData().setIpAddress(ip);
-        u.queueSave();
+        s = (IStorageObjectHolder<UserData>) u;
+
+        s.getData().setIpAddress(ip);
+        s.queueSave();
     }
 
     private IUser getIUser(String player)
