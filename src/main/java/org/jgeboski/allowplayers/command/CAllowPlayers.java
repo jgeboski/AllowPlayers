@@ -135,7 +135,7 @@ public class CAllowPlayers implements CommandExecutor
 
         ap.reload();
 
-        Message.info(sender, "Configuration reloaded.");
+        Message.info(sender, "Plugin successfully reloaded");
     }
 
     private void set(CommandSender sender, String[] args)

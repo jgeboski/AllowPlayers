@@ -60,7 +60,7 @@ public class AllowPlayers extends JavaPlugin
     {
         config   = new Configuration(new File(getDataFolder(), "config.yml"));
         events   = new EventListener(this);
-        watcher  = new Watcher(this);
+        watcher  = null;
         storage  = null;
 
         enabled  = true;
@@ -107,10 +107,12 @@ public class AllowPlayers extends JavaPlugin
         }
 
         events.register();
-        watcher.start();
 
         getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
+
+        watcher = new Watcher(this);
+        watcher.start();
     }
 
     public void onDisable()
@@ -126,15 +128,12 @@ public class AllowPlayers extends JavaPlugin
 
     public void reload()
     {
-        if (config.ircEnabled)
-            craftirc.unregisterEndPoint(config.ircTag);
+        PluginManager pm;
 
-        config.load();
+        pm = getServer().getPluginManager();
 
-        if (config.ircEnabled && !registerEndPoint(config.ircTag, apPoint))
-            config.ircEnabled = false;
-
-        watcher.reset();
+        pm.disablePlugin(this);
+        pm.enablePlugin(this);
     }
 
     private boolean registerEndPoint(String tag, Object ep)
