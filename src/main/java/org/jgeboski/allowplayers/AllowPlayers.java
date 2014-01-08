@@ -34,6 +34,7 @@ import com.ensifera.animosity.craftirc.RelayedMessage;
 
 import org.jgeboski.allowplayers.command.CAllowPlayers;
 import org.jgeboski.allowplayers.command.COnlineMode;
+import org.jgeboski.allowplayers.listener.PlayerListener;
 import org.jgeboski.allowplayers.util.Log;
 import org.jgeboski.allowplayers.util.Message;
 import org.jgeboski.allowplayers.util.Reflect;
@@ -48,8 +49,6 @@ public class AllowPlayers extends JavaPlugin
     public Watcher        watcher;
     public StorageManager storage;
 
-    private EventListener events;
-
     public boolean enabled;
     public boolean online;
 
@@ -59,7 +58,6 @@ public class AllowPlayers extends JavaPlugin
     public void onLoad()
     {
         config   = new Configuration(new File(getDataFolder(), "config.yml"));
-        events   = new EventListener(this);
         watcher  = null;
         storage  = null;
 
@@ -106,7 +104,7 @@ public class AllowPlayers extends JavaPlugin
                 config.ircEnabled = false;
         }
 
-        events.register();
+        pm.registerEvents(new PlayerListener(this), this);
 
         getCommand("allowplayers").setExecutor(new CAllowPlayers(this));
         getCommand("onlinemode").setExecutor(new COnlineMode(this));
