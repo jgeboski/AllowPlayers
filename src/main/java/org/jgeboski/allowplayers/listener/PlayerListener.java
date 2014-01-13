@@ -40,16 +40,16 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent event)
     {
-        Player  p;
-        String  s;
-        String  ip;
+        Player p;
+        String s;
+        String ip;
 
         if (!ap.enabled || ap.online)
             return;
 
         p  = event.getPlayer();
         s  = p.getName();
-        ip = event.getKickMessage();
+        ip = event.getAddress().getHostAddress();
 
         try {
             if (ap.storage.checkIP(p, ip)) {

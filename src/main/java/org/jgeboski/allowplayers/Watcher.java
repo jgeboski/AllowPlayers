@@ -37,7 +37,7 @@ public class Watcher extends Thread
         timeout = new Object();
 
         try {
-            url = new URL("http://session.minecraft.net/game/checkserver.jsp");
+            url = new URL("https://sessionserver.mojang.com/session/minecraft/");
         } catch (MalformedURLException e) { }
     }
 
