@@ -20,7 +20,7 @@ package org.jgeboski.allowplayers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
 
 public class Watcher extends Thread
 {
@@ -37,30 +37,41 @@ public class Watcher extends Thread
         timeout = new Object();
 
         try {
-            url = new URL("https://sessionserver.mojang.com/session/minecraft/");
+            url = new URL("https://sessionserver.mojang.com/session/minecraft/join");
         } catch (MalformedURLException e) { }
     }
 
     public void run()
     {
-        URLConnection urlc;
+        HttpURLConnection conn;
+        int code;
 
         while (!quit)
         {
             if (ap.enabled) {
                 try {
-                    urlc = url.openConnection();
+                    conn = (HttpURLConnection) url.openConnection();
 
-                    urlc.setAllowUserInteraction(false);
-                    urlc.setConnectTimeout(ap.config.connTimeout);
-                    urlc.setReadTimeout(ap.config.connTimeout);
-                    urlc.getContent();
+                    conn.setAllowUserInteraction(false);
+                    conn.setConnectTimeout(ap.config.connTimeout);
+                    conn.setReadTimeout(ap.config.connTimeout);
+                    conn.setRequestMethod("POST");
+                    conn.connect();
 
-                    ap.setOnline(true);
-                    ap.setOnlineMode(true);
+                    code = conn.getResponseCode();
+
+                    if ((code != 200) && (code != 400))
+                        throw new IOException();
+
+                    if (!ap.online) {
+                        ap.setOnline(true);
+                        ap.setOnlineMode(true);
+                    }
                 } catch (IOException e) {
-                    ap.setOnline(false);
-                    ap.setOnlineMode(false);
+                    if (ap.online) {
+                        ap.setOnline(false);
+                        ap.setOnlineMode(false);
+                    }
                 }
             }
 
