@@ -54,8 +54,16 @@
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>libnull-repo</id>
-            <url>http://repo.libnull.so/</url>
+            <id>ess3-repo</id>
+            <url>http://repo.ess3.net/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>gestdown-repo</id>
+            <url>http://www.gestdown.info:8888/nexus/content/repositories/bukkit-plugin-snapshot/</url>
+        </repository>
+        <repository>
+            <id>kitteh-repo</id>
+            <url>http://repo.kitteh.org/content/groups/public/</url>
         </repository>
     </repositories>
 
@@ -63,7 +71,7 @@
         <dependency>
             <groupId>be.Balor</groupId>
             <artifactId>AdminCmd</artifactId>
-            <version>[6.5,)</version>
+            <version>[6.5-SNAPSHOT,)</version>
         </dependency>
         <dependency>
             <groupId>com.ensifera</groupId>
