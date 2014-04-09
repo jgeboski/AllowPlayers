@@ -27,13 +27,11 @@ import net.ess3.api.IEssentials;
 
 import org.jgeboski.allowplayers.storage.plugin.PAdminCmd;
 import org.jgeboski.allowplayers.storage.plugin.PEssentials;
-import org.jgeboski.allowplayers.storage.plugin.PEssentials3;
 
 public enum StorageType
 {
-    ADMINCMD    ("AdminCmd",     PAdminCmd.class),
-    ESSENTIALS  ("Essentials",   PEssentials.class),
-    ESSENTIALS3 ("Essentials-3", PEssentials3.class);
+    ADMINCMD   ("AdminCmd",     PAdminCmd.class),
+    ESSENTIALS ("Essentials",   PEssentials.class);
 
     private String name;
     private Class  storage;
