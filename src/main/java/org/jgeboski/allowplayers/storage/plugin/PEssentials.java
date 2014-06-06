@@ -17,10 +17,13 @@
 
 package org.jgeboski.allowplayers.storage.plugin;
 
+import java.util.UUID;
+
 import org.bukkit.plugin.Plugin;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
+import com.earth2me.essentials.UserData;
 
 import org.jgeboski.allowplayers.storage.StorageException;
 import org.jgeboski.allowplayers.storage.StoragePlugin;
@@ -34,32 +37,69 @@ public class PEssentials extends StoragePlugin<Essentials>
         super(plugin);
     }
 
-    public String getIP(String player)
+    public boolean syncIp()
+    {
+        return false;
+    }
+
+    public boolean syncId()
+    {
+        return false;
+    }
+
+    public String getIp(String player)
         throws StorageException
     {
         User u;
 
         u = plugin.getUser(player);
-
-        if (u == null)
-            throw new StorageException("Failed to obtain User object");
 
         return u.getLastLoginAddress();
     }
 
-    public void setIP(String player, String ip)
+    public UUID getId(String player)
+        throws StorageException
+    {
+        User   u;
+        Object o;
+
+        try {
+            u = plugin.getUser(player);
+            o = Reflect.getField((UserData) u, "config");
+            o = Reflect.invoke(o, "getString", "uuid", "");
+
+            return UUID.fromString((String) o);
+        } catch (ReflectException e) {
+            throw new StorageException(e);
+        }
+    }
+
+    public void setIp(String player, String ip)
         throws StorageException
     {
         User u;
 
         u = plugin.getUser(player);
 
-        if (u == null)
-            throw new StorageException("Failed to obtain User object");
-
         try {
             Reflect.invoke(u, "_setLastLoginAddress", ip);
             u.save();
+        } catch (ReflectException e) {
+            throw new StorageException(e);
+        }
+    }
+
+    public void setId(String player, UUID id)
+        throws StorageException
+    {
+        User   u;
+        Object o;
+
+        try {
+            u = plugin.getUser(player);
+            o = Reflect.getField((UserData) u, "config");
+
+            Reflect.invoke(o, "set", "uuid", id.toString());
         } catch (ReflectException e) {
             throw new StorageException(e);
         }

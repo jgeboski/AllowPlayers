@@ -17,6 +17,8 @@
 
 package org.jgeboski.allowplayers.storage.plugin;
 
+import java.util.UUID;
+
 import org.bukkit.plugin.Plugin;
 
 import be.Balor.bukkit.AdminCmd.AdminCmd;
@@ -32,28 +34,62 @@ public class PAdminCmd extends StoragePlugin<AdminCmd>
         super(plugin);
     }
 
-    public String getIP(String player)
+    public boolean syncIp()
+    {
+        return false;
+    }
+
+    public boolean syncId()
+    {
+        return true;
+    }
+
+    public String getIp(String player)
         throws StorageException
     {
         ACPlayer p;
-        String   a;
+        String   s;
 
         p = getACPlayer(player);
-        a = p.getInformation("last-ip").getString();
+        s = p.getInformation("last-ip").getString();
 
-        if (a != null)
-            a = a.replaceAll("/", "");
+        if (s != null)
+            s = s.replaceAll("/", "");
 
-        return a;
+        return s;
     }
 
-    public void setIP(String player, String ip)
+    public UUID getId(String player)
+        throws StorageException
+    {
+        ACPlayer p;
+        String   s;
+
+        p = getACPlayer(player);
+        s = p.getInformation("uuid").getString();
+
+        if (s == null)
+            return null;
+
+        return UUID.fromString(s);
+    }
+
+    public void setIp(String player, String ip)
         throws StorageException
     {
         ACPlayer p;
 
         p = getACPlayer(player);
         p.setInformation("last-ip", ip);
+    }
+
+    public void setId(String player, UUID id)
+        throws StorageException
+    {
+        ACPlayer p;
+
+        p = getACPlayer(player);
+        p.setInformation("uuid", id.toString());
     }
 
     private ACPlayer getACPlayer(String player)

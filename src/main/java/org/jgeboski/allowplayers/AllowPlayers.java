@@ -20,6 +20,7 @@ package org.jgeboski.allowplayers;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -208,8 +209,31 @@ public class AllowPlayers extends JavaPlugin
             o = Reflect.invoke(s, "getServer");
             Reflect.invoke(o, "setOnlineMode", mode);
         } catch (ReflectException e) {
-            Log.severe("CraftBukkit's internal symbols have changed!");
-            Log.severe("Please report this as a bug.");
+            symerror(e);
         }
+    }
+
+    public void setPlayerId(Player player, UUID id)
+    {
+        Object o;
+
+        try {
+            o = Reflect.invoke(player, "getHandle");
+            Reflect.setField(o, "uniqueID", id);
+
+            o = Reflect.invoke(o, "getProfile");
+            Reflect.setField(o, "id", id);
+
+            player.loadData();
+        } catch (ReflectException e) {
+            symerror(e);
+        }
+    }
+
+    private void symerror(ReflectException expn)
+    {
+        Log.severe(expn.getMessage());
+        Log.severe("CraftBukkit's internal symbols have changed!");
+        Log.severe("Please report this as a bug.");
     }
 }

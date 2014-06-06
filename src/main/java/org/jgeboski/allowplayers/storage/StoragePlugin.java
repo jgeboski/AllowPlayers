@@ -17,6 +17,8 @@
 
 package org.jgeboski.allowplayers.storage;
 
+import java.util.UUID;
+
 import org.bukkit.plugin.Plugin;
 
 public abstract class StoragePlugin<T>
@@ -28,9 +30,18 @@ public abstract class StoragePlugin<T>
         this.plugin = (T) plugin;
     }
 
-    public abstract String getIP(String player)
+    public abstract boolean syncIp();
+    public abstract boolean syncId();
+
+    public abstract String getIp(String player)
         throws StorageException;
 
-    public abstract void setIP(String player, String ip)
+    public abstract UUID getId(String player)
+        throws StorageException;
+
+    public abstract void setIp(String player, String ip)
+        throws StorageException;
+
+    public abstract void setId(String player, UUID id)
         throws StorageException;
 }

@@ -154,7 +154,7 @@ public class CAllowPlayers implements CommandExecutor
         }
 
         try {
-            ap.storage.setIP(args[1], args[2]);
+            ap.storage.plugin.setIp(args[1], args[2]);
             Message.info(sender, "Set IP to %s for %s", args[2], args[1]);
         } catch (StorageException e) {
             Message.severe(sender, e.getMessage());

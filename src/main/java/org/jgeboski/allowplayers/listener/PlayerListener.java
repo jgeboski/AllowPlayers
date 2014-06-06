@@ -17,6 +17,8 @@
 
 package org.jgeboski.allowplayers.listener;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,27 +45,36 @@ public class PlayerListener implements Listener
         Player p;
         String s;
         String ip;
-
-        if (!ap.enabled || ap.online)
-            return;
+        UUID   id;
 
         p  = event.getPlayer();
         s  = p.getName();
         ip = event.getAddress().getHostAddress();
 
+        if (!ap.enabled || ap.online) {
+            try {
+                ap.storage.update(p, ip);
+            } catch (StorageException e) {
+                Log.severe(e.getMessage());
+            }
+            return;
+        }
+
         try {
             if (ap.storage.checkIP(p, ip)) {
+                id = ap.storage.plugin.getId(s);
+                ap.setPlayerId(p, id);
+
+                Log.info("UUID of player %s set to %s", s, id);
                 Log.info("%s [%s] granted access to join", s, ip);
-                return;
+            } else {
+                event.disallow(Result.KICK_OTHER,
+                   "Minecraft.net is offline, and you are not " +
+                   "recognized. Try back later.");
+                Log.info("%s [%s] denied access to join", s, ip);
             }
         } catch (StorageException e) {
             Log.severe(e.getMessage());
         }
-
-        event.disallow(Result.KICK_OTHER,
-                   "Minecraft.net is offline, and you are not " +
-                   "recognized. Try back later.");
-
-        Log.info("%s [%s] denied access to join", s, ip);
     }
 }

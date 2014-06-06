@@ -17,6 +17,8 @@
 
 package org.jgeboski.allowplayers.storage;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -24,13 +26,13 @@ import org.bukkit.plugin.PluginManager;
 public class StorageManager
 {
     public StorageType   type;
-    public StoragePlugin storage;
+    public StoragePlugin plugin;
 
     protected StorageManager(StorageType type, Plugin plugin)
         throws StorageException
     {
-        this.type    = type;
-        this.storage = type.getStorage(plugin);
+        this.type   = type;
+        this.plugin = type.getStorage(plugin);
     }
 
     public static StorageManager create(PluginManager pmanager, String plugin)
@@ -70,30 +72,34 @@ public class StorageManager
         return type;
     }
 
-    public boolean checkIP(String player, String ip)
+    public boolean checkIP(String player, String ip, UUID id)
         throws StorageException
     {
         String a;
 
-        a = storage.getIP(player);
+        a = plugin.getIp(player);
         return ip.equals(a);
     }
 
     public boolean checkIP(Player player, String ip)
         throws StorageException
     {
-        return checkIP(player.getName(), ip);
+        return checkIP(player.getName(), ip, player.getUniqueId());
     }
 
-    public void setIP(String player, String ip)
+    public void update(String player, String ip, UUID id)
         throws StorageException
     {
-        storage.setIP(player, ip);
+        if (plugin.syncIp())
+            plugin.setIp(player, ip);
+
+        if (plugin.syncId())
+            plugin.setId(player, id);
     }
 
-    public void setIP(Player player, String ip)
+    public void update(Player player, String ip)
         throws StorageException
     {
-        setIP(player.getName(), ip);
+        update(player.getName(), ip, player.getUniqueId());
     }
 }
